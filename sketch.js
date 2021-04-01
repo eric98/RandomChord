@@ -112,7 +112,6 @@ class Tonality {
 }
 
 let actualTonality;
-let button;
 let metronomeInput;
 
 // CHECKS
@@ -134,16 +133,36 @@ let augChord;
 let minorMaj7Check;
 let minorMaj7Chord;
 
+let nextKlack = 0;
+let metronomeActived = false;
+let plingActived = true;
+
+let metronomeCheck;
+let plingCheck;
+
 function randomTonality() {
     var characters = 'ABCDEFG';
     actualTonality = new Tonality(characters.charAt(Math.floor(Math.random() * characters.length)),Math.floor(Math.random() * 3));
 }
 
+function activeMetronome() {
+    metronomeActived = !metronomeActived;
+}
+
+function preload() {
+    klack = new Audio('metronom-klack.mp3');
+    pling = new Audio('metronom-pling.mp3');
+
+    // Sound recording by Mirko Horstmann via freesound.org
+    // https://freesound.org/people/m1rk0/sounds/50070/
+    // https://freesound.org/people/m1rk0/sounds/50071/
+  }
+
 function setup() {
     createCanvas(windowWidth, windowHeight);
 
-    button = createButton('Random');
-    button.position(windowWidth/2, windowHeight/2 + 100);
+    button = createButton('Random Chord');
+    button.position(width/2 - 25, height/2 - 75);
     button.mousePressed(randomTonality);
 
     majChord = true;
@@ -170,24 +189,62 @@ function setup() {
     minorMaj7ChordCheck = createCheckbox('-Δ (minor maj 7)', minorMaj7Chord);
     minorMaj7ChordCheck.changed(function () {minorMaj7Chord = !minorMaj7Chord});
     
-    input = createInput();
-    input.position(windowWidth/2 - 50, windowHeight/2 + 200);
-    input.value('90');
+    metronomeCheck = createCheckbox('Metronome on/off', metronomeActived);
+    metronomeCheck.changed(activeMetronome);
+    metronomeCheck.position(width/2 - 40, height/2 + 120);
+
+    plingCheck = createCheckbox('Pling at 1st beat', plingActived);
+    plingCheck.changed(function () {plingActived = !plingActived});
+    plingCheck.position(width/2 - 40, height/2 + 140);
+    
 
     randomTonality();
+
+    tempoSlider = createSlider(0, 208, 80);
+    tempoSlider.class('slider');
+    tempoSlider.position(width/2 - 50, height/2 + 220);
+
+    majCheck.position(width/2 + 150, height/2 - 100);
+    dominantCheck.position(width/2 + 150, height/2 - 50);
+    minorCheck.position(width/2 + 150, height/2);
+    semiDismCheck.position(width/2 + 150, height/2 + 50);
+    augCheck.position(width/2 + 150, height/2 + 100);
+    minorMaj7ChordCheck.position(width/2 + 150, height/2 + 150);
 }
+
+let beatCount = 0;
   
 function draw() {
 
     background(255);
     textSize(20);
-    text('Metronome', input.x - 120, input.y - 50);
     
     actualTonality.draw();
-    majCheck.position(windowWidth/2 + 150, windowHeight/2 - 100);
-    dominantCheck.position(windowWidth/2 + 150, windowHeight/2 - 50);
-    minorCheck.position(windowWidth/2 + 150, windowHeight/2);
-    semiDismCheck.position(windowWidth/2 + 150, windowHeight/2 + 50);
-    augCheck.position(windowWidth/2 + 150, windowHeight/2 + 100);
-    minorMaj7ChordCheck.position(windowWidth/2 + 150, windowHeight/2 + 150);
+    
+    let timeNow = millis();
+  
+    if (timeNow > nextKlack && metronomeActived) {
+
+        nextKlack = timeNow + 60000/tempoSlider.value();
+        beatCount++;
+        beatCount = beatCount % 4;
+
+        if (beatCount == 0) {
+            randomTonality();
+
+            if (plingActived) {
+                pling.play();
+            }
+            else  {
+                klack.play();
+            }
+        }
+        else {
+            klack.play();
+        }
+
+    }
+
+    text(`${tempoSlider.value()} bpm`, width/2 - 50, height/2 + 150);
+    
 }
