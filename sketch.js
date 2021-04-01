@@ -166,11 +166,11 @@ function setup() {
     button.mousePressed(randomTonality);
 
     majChord = true;
-    majCheck = createCheckbox('Maj7 (major 7)', majChord);
+    majCheck = createCheckbox('Δ (major 7)', majChord);
     majCheck.changed(function () {majChord = !majChord});
     
     dominantChord = false;
-    dominantCheck = createCheckbox('Δ (dominant)', dominantChord);
+    dominantCheck = createCheckbox('7 (dominant)', dominantChord);
     dominantCheck.changed(function () {dominantChord = !dominantChord});
     
     minorChord = false;
