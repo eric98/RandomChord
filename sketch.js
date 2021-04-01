@@ -200,9 +200,13 @@ function setup() {
 
     randomTonality();
 
-    tempoSlider = createSlider(0, 208, 80);
+    tempoSlider = createSlider(40, 208, 80);
     tempoSlider.class('slider');
     tempoSlider.position(width/2 - 50, height/2 + 220);
+
+    beatSlider = createSlider(1, 8, 4);
+    beatSlider.class('slider');
+    beatSlider.position(width/2 - 50, height/2 + 290);
 
     majCheck.position(width/2 + 150, height/2 - 100);
     dominantCheck.position(width/2 + 150, height/2 - 50);
@@ -227,7 +231,7 @@ function draw() {
 
         nextKlack = timeNow + 60000/tempoSlider.value();
         beatCount++;
-        beatCount = beatCount % 4;
+        beatCount = beatCount % beatSlider.value();
 
         if (beatCount == 0) {
             randomTonality();
@@ -246,5 +250,8 @@ function draw() {
     }
 
     text(`${tempoSlider.value()} bpm`, width/2 - 50, height/2 + 150);
+    text(`${beatSlider.value()} beats`, width/2 - 50, height/2 + 220);
     
+    textSize(64);
+    text((beatCount+1), width/2 + 190, height/2 + 220);
 }
