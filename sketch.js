@@ -286,12 +286,6 @@ function preload() {
 function setup() {
     createCanvas(windowWidth, windowHeight);
 
-    nextTonality = new Tonality(characters.charAt(Math.floor(Math.random() * characters.length)),Math.floor(Math.random() * 3));
-    actualTonality = new Tonality(characters.charAt(Math.floor(Math.random() * characters.length)),Math.floor(Math.random() * 3));
-    randomTonality();
-    randomTonality();
-    randomTonality();
-
 
     button = createButton('Next Chord');
     button.position(width/2 - 25, height/2 - 75);
@@ -333,8 +327,10 @@ function setup() {
     fifthsCheck.changed(function () {fifthsActived = !fifthsActived});
     fifthsCheck.position(width/2 - 40, height/2 - 140);
     
-
-    
+    nextTonality = new Tonality(characters.charAt(Math.floor(Math.random() * characters.length)),Math.floor(Math.random() * 3));
+    actualTonality = new Tonality(characters.charAt(Math.floor(Math.random() * characters.length)),Math.floor(Math.random() * 3));
+    randomTonality();
+    randomTonality();
     randomTonality();
 
     tempoSlider = createSlider(40, 208, 80);
