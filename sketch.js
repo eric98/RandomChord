@@ -4,17 +4,24 @@ class Tonality {
 
       switch (_alterationNum){
         case 0:
+            this.alterationSemiTone = 0;
             break;
         case 1:
             this.alteration = '♭';
+            this.alterationSemiTone = -1;
             break;
         case 2:
             this.alteration = '♯';
+            this.alterationSemiTone = 1;
             break;
       }
 
+      this.semitone = getSemitone(_name.charAt(0), this.alterationSemiTone);
+
       this.chordSize = 32;
       this.setChord();
+
+      this.scale = 1;
     }
 
     setMaj7() {
@@ -99,19 +106,19 @@ class Tonality {
         }
     }
 
-    draw() {
-        textSize(64);
-        text(this.name, windowWidth/2, windowHeight/2);
-        textSize(this.chordSize);
-        text(this.chord, windowWidth/2 + 50, windowHeight/2 + 5);
-        
-        text(this.alteration, windowWidth/2 + 50, windowHeight/2 - 35);
-        
-        // fill(0, 0, 0);
+    draw(_x, _y) {
+        textSize(64 * this.scale);
+        text(this.name, _x, _y);
+
+        textSize(this.chordSize * this.scale);
+        text(this.chord, _x + 50 * this.scale, _y + 5 * this.scale);
+        text(this.alteration, _x + 50 * this.scale, _y - 35 * this.scale);
     }
 }
 
+let nextTonality;
 let actualTonality;
+let lastTonality;
 let metronomeInput;
 
 // CHECKS
@@ -133,6 +140,7 @@ let augChord;
 let minorMaj7Check;
 let minorMaj7Chord;
 
+let beatCount = 0;
 let nextKlack = 0;
 let metronomeActived = false;
 let plingActived = true;
@@ -140,9 +148,126 @@ let plingActived = true;
 let metronomeCheck;
 let plingCheck;
 
+let fifthsCheck;
+let fifthsActived = true;
+
+let characters ='ABCDEFG';
+
+function getSemitone(tone, alter) {
+
+    let result = 0;
+    switch (tone) {
+        case 'A':
+            result = 0;
+            break;
+        case 'B':
+            result = 2;
+            break;
+        case 'C':
+            result = 3;
+            break;
+        case 'D':
+            result = 5;
+            break;
+        case 'E':
+            result = 7;
+            break;
+        case 'F':
+            result = 8;
+            break;
+        case 'G':
+            result = 10;
+            break;
+    }
+
+    return result + alter;
+}
+
+function getTone(semitone) {
+    let sem = semitone % 12;
+
+    console.log('esperat: '+sem);
+
+    let ton = 'A';
+    let alter = 0;
+
+    switch (sem) {
+        case 0:
+            ton = 'A';
+            alter = 0;
+            break;
+        case 1:
+            ton = 'B';
+            alter = 1;
+            break;
+        case 2:
+            ton = 'B';
+            alter = 0;
+            break;
+        case 3:
+            ton = 'C';
+            alter = 0;
+            break;
+        case 4:
+            ton = 'C';
+            alter = 2;
+            break;
+        case 5:
+            ton = 'D';
+            alter = 0;
+            break;
+        case 6:
+            ton = 'E';
+            alter = 1;
+            break;
+        case 7:
+            ton = 'E';
+            alter = 0;
+            break;
+        case 8:
+            ton = 'F';
+            alter = 0;
+            break;
+        case 9:
+            ton = 'F';
+            alter = 2;
+            break;
+        case 10:
+            ton = 'G';
+            alter = 0;
+            break;
+        case 11:
+            ton = 'G';
+            alter = 2;
+            break;
+    }
+
+    return new Tonality(ton, alter);
+}
+
+function nextFifth(ton) {
+    var nF = getTone(ton.semitone + 5);
+    return nF;
+}
+
+function randTon() {
+    return new Tonality(characters.charAt(Math.floor(Math.random() * characters.length)),Math.floor(Math.random() * 3));
+}
+
 function randomTonality() {
-    var characters = 'ABCDEFG';
-    actualTonality = new Tonality(characters.charAt(Math.floor(Math.random() * characters.length)),Math.floor(Math.random() * 3));
+    lastTonality = actualTonality;
+    actualTonality = nextTonality;
+
+    if (fifthsActived) {
+        nextTonality = nextFifth(actualTonality);
+    }
+    else {
+        nextTonality = randTon();
+    }
+
+    lastTonality.scale = 1;
+    nextTonality.scale = 1;
+    actualTonality.scale = 2;
 }
 
 function activeMetronome() {
@@ -161,7 +286,14 @@ function preload() {
 function setup() {
     createCanvas(windowWidth, windowHeight);
 
-    button = createButton('Random Chord');
+    nextTonality = new Tonality(characters.charAt(Math.floor(Math.random() * characters.length)),Math.floor(Math.random() * 3));
+    actualTonality = new Tonality(characters.charAt(Math.floor(Math.random() * characters.length)),Math.floor(Math.random() * 3));
+    randomTonality();
+    randomTonality();
+    randomTonality();
+
+
+    button = createButton('Next Chord');
     button.position(width/2 - 25, height/2 - 75);
     button.mousePressed(randomTonality);
 
@@ -197,7 +329,12 @@ function setup() {
     plingCheck.changed(function () {plingActived = !plingActived});
     plingCheck.position(width/2 - 40, height/2 + 140);
     
+    fifthsCheck = createCheckbox('Fifths chords', fifthsActived);
+    fifthsCheck.changed(function () {fifthsActived = !fifthsActived});
+    fifthsCheck.position(width/2 - 40, height/2 - 140);
+    
 
+    
     randomTonality();
 
     tempoSlider = createSlider(40, 208, 80);
@@ -208,22 +345,24 @@ function setup() {
     beatSlider.class('slider');
     beatSlider.position(width/2 - 50, height/2 + 290);
 
-    majCheck.position(width/2 + 150, height/2 - 100);
-    dominantCheck.position(width/2 + 150, height/2 - 50);
-    minorCheck.position(width/2 + 150, height/2);
-    semiDismCheck.position(width/2 + 150, height/2 + 50);
-    augCheck.position(width/2 + 150, height/2 + 100);
-    minorMaj7ChordCheck.position(width/2 + 150, height/2 + 150);
-}
+    let checkX = width/2 + 250;
 
-let beatCount = 0;
+    majCheck.position(checkX, height/2 - 100);
+    dominantCheck.position(checkX, height/2 - 50);
+    minorCheck.position(checkX, height/2);
+    semiDismCheck.position(checkX, height/2 + 50);
+    augCheck.position(checkX, height/2 + 100);
+    minorMaj7ChordCheck.position(checkX, height/2 + 150);
+}
   
 function draw() {
 
     background(255);
     textSize(20);
     
-    actualTonality.draw();
+    lastTonality.draw(width/2 - 150, height/2);
+    actualTonality.draw(width/2 - 50, height/2);
+    nextTonality.draw(width/2 + 150, height/2);
     
     let timeNow = millis();
   
