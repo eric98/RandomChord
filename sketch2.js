@@ -52,28 +52,28 @@ class Tonality {
 
         switch(_chord) {
             case 0:
-                return majChord;
+                return p5_maj.elt.checked;
             case 1:
-                return dominantChord;
+                return p5_dominant.elt.checked;
             case 2:
-                return minorChord;
+                return p5_minor.elt.checked;
             case 3:
-                return semiDismChord;
+                return p5_semiDism.elt.checked;
             case 4:
-                return augChord;
+                return p5_aug.elt.checked;
             case 5:
-                return minorMaj7Chord;
+                return p5_minorMaj7Chord.elt.checked;
         }
     }
 
     setChord() {
-        
-        if (majChord ||
-            dominantChord ||
-            minorChord ||
-            semiDismChord ||
-            augChord ||
-            minorMaj7Chord 
+
+        if (p5_maj.elt.checked ||
+            p5_dominant.elt.checked ||
+            p5_minor.elt.checked ||
+            p5_semiDism.elt.checked ||
+            p5_aug.elt.checked ||
+            p5_minorMaj7Chord.elt.checked 
             ) {
 
                 let randChord;
@@ -122,24 +122,6 @@ let lastTonality;
 let metronomeInput;
 
 // CHECKS
-let majCheck;
-let majChord;
-
-let dominantCheck;
-let dominantChord;
-
-let minorCheck;
-let minorChord;
-
-let semiDismCheck;
-let semiDismChord;
-
-let augCheck;
-let augChord;
-
-let minorMaj7Check;
-let minorMaj7Chord;
-
 let beatCount = 0;
 let nextKlack = 0;
 let metronomeActived = false;
@@ -152,83 +134,6 @@ let fifthsCheck;
 let fifthsActived = true;
 
 let characters ='ABCDEFG';
-
-/*
-var notes = {
-                "1C": new Howl({
-                    urls: ["media/523-C.mp3"]
-                }),
-                "1Cs": new Howl({
-                    urls: ["media/545-C-sharp.mp3"]
-                }),
-                "1D": new Howl({
-                    urls: ["media/587-D.mp3"]
-                }),
-                "1Ds": new Howl({
-                    urls: ["media/622-D-sharp.mp3"]
-                }),
-                "1E": new Howl({
-                    urls: ["media/659-E.mp3"]
-                }),
-                "1F": new Howl({
-                    urls: ["media/698-F.mp3"]
-                }),
-                "1Fs": new Howl({
-                    urls: ["media/698-F-sharp.mp3"]
-                }),
-                "1G": new Howl({
-                    urls: ["media/783-G.mp3"]
-                }),
-                "1Gs": new Howl({
-                    urls: ["media/830-G-sharp.mp3"]
-                }),
-                "2A": new Howl({
-                    urls: ["media/880-A.mp3"]
-                }),
-                "2As": new Howl({
-                    urls: ["media/932-A-sharp.mp3"]
-                }),
-                "2B": new Howl({
-                    urls: ["media/987-B.mp3"]
-                }),
-                "2C": new Howl({
-                    urls: ["media/1046-C.mp3"]
-                }),
-                "2Cs": new Howl({
-                    urls: ["media/1090-C-sharp.mp3"]
-                }),
-                "2D": new Howl({
-                    urls: ["media/1174-D.mp3"]
-                }),
-                "2Ds": new Howl({
-                    urls: ["media/1244-D-sharp.mp3"]
-                }),
-                "2E": new Howl({
-                    urls: ["media/1318-E.mp3"]
-                }),
-                "2F": new Howl({
-                    urls: ["media/1396-F.mp3"]
-                }),
-                "2Fs": new Howl({
-                    urls: ["media/1396-F-sharp.mp3"]
-                }),
-                "2G": new Howl({
-                    urls: ["media/1566-G.mp3"]
-                }),
-                "2Gs": new Howl({
-                    urls: ["media/1660-G-sharp.mp3"]
-                }),
-                "3A": new Howl({
-                    urls: ["media/1760-A.mp3"]
-                }),
-                "3As": new Howl({
-                    urls: ["media/1864-A-sharp.mp3"]
-                }),
-                "3B": new Howl({
-                    urls: ["media/1974-B.mp3"]
-                })
-            }
-*/
 
 function getSemitone(tone, alter) {
 
@@ -258,10 +163,6 @@ function getSemitone(tone, alter) {
     }
 
     return result + alter;
-}
-
-function windowResized() {
-    resizeCanvas(windowWidth, windowHeight);
 }
 
 function getTone(semitone) {
@@ -361,69 +262,44 @@ function preload() {
     // Sound recording by Mirko Horstmann via freesound.org
     // https://freesound.org/people/m1rk0/sounds/50070/
     // https://freesound.org/people/m1rk0/sounds/50071/
-  }
+}
 
 function setup() {
-    createCanvas(windowWidth, windowHeight);
+    let can = createCanvas(600, 200);
+    can.parent('sketch-container');
 
-    button = createButton('Next Chord');
-    button.mousePressed(randomTonality);
+    p5_maj = select('#_maj7');
+    p5_dominant = select('#_dom');
+    p5_minor = select('#_min7');
+    p5_semiDism = select('#_semiDism7');
+    p5_aug = select('#_aug7');
+    p5_minorMaj7Chord = select('#_minMaj7');
 
-    majChord = true;
-    majCheck = createCheckbox('Δ (major 7)', majChord);
-    majCheck.changed(function () {majChord = !majChord});
-    
-    dominantChord = false;
-    dominantCheck = createCheckbox('7 (dominant)', dominantChord);
-    dominantCheck.changed(function () {dominantChord = !dominantChord});
-    
-    minorChord = false;
-    minorCheck = createCheckbox('-7 (minor 7)', minorChord);
-    minorCheck.changed(function () {minorChord = !minorChord});
-    
-    semiDismChord = false;
-    semiDismCheck = createCheckbox('ø (semidism)', semiDismChord);
-    semiDismCheck.changed(function () {semiDismChord = !semiDismChord});
-    
-    augChord = false;
-    augCheck = createCheckbox('7♯5 (aug 7)', augChord);
-    augCheck.changed(function () {augChord = !augChord});
-    
-    minorMaj7Chord = false;
-    minorMaj7ChordCheck = createCheckbox('-Δ (minor maj 7)', minorMaj7Chord);
-    minorMaj7ChordCheck.changed(function () {minorMaj7Chord = !minorMaj7Chord});
-    
-    metronomeCheck = createCheckbox('Metronome on/off', metronomeActived);
-    metronomeCheck.changed(activeMetronome);
+    // button = createButton('Next Chord');
+    // button.mousePressed(randomTonality);
 
-    plingCheck = createCheckbox('Pling at 1st beat', plingActived);
-    plingCheck.changed(function () {plingActived = !plingActived});
-    
-    fifthsCheck = createCheckbox('Fifths chords', fifthsActived);
-    fifthsCheck.changed(function () {fifthsActived = !fifthsActived});
-
-    
     nextTonality = new Tonality(characters.charAt(Math.floor(Math.random() * characters.length)),Math.floor(Math.random() * 3));
     actualTonality = new Tonality(characters.charAt(Math.floor(Math.random() * characters.length)),Math.floor(Math.random() * 3));
     randomTonality();
     randomTonality();
     randomTonality();
+    randomTonality();
 
-    tempoSlider = createSlider(40, 208, 80);
-    tempoSlider.class('slider');
+    // tempoSlider = createSlider(40, 208, 80);
+    // tempoSlider.class('slider');
 
-    beatSlider = createSlider(1, 8, 4);
-    beatSlider.class('slider');
+    // beatSlider = createSlider(1, 8, 4);
+    // beatSlider.class('slider');
 }
   
 function draw() {
 
-    background(255);
+    background(255,0,0);
     textSize(20);
 
-    let centerX = width/2;
-    let centerY = height/2;
-    
+    let centerX = width/2 - 50;
+    let centerY = height/2 + 50;
+
     let tonalityCenter = centerX - 50;
     lastTonality.draw(tonalityCenter - 150, centerY);
     actualTonality.draw(tonalityCenter, centerY);
@@ -453,29 +329,10 @@ function draw() {
 
     }
 
-    text(`${tempoSlider.value()} bpm`, centerX - 50, centerY + 150);
-    text(`${beatSlider.value()} beats`, centerX - 50, centerY + 220);
+    // text(`${tempoSlider.value()} bpm`, centerX - 50, centerY + 150);
+    // text(`${beatSlider.value()} beats`, centerX - 50, centerY + 220);
     
-    textSize(64);
-    text((beatCount+1), centerX + 190, centerY + 220);
-
-
+    // textSize(64);
+    // text((beatCount+1), centerX + 190, centerY + 220);
     
-    /////
-    button.position(centerX - 25, centerY - 75);
-    metronomeCheck.position(centerX - 40, centerY + 120);
-    plingCheck.position(centerX - 40, centerY + 140);
-    fifthsCheck.position(centerX - 40, centerY - 140);
-    tempoSlider.position(centerX - 50, centerY + 220);
-    beatSlider.position(centerX - 50, centerY + 290);
-
-    let checkX = width * 0.75;
-    checkX = centerX + 350;
-
-    majCheck.position(checkX, centerY - 100);
-    dominantCheck.position(checkX, centerY - 50);
-    minorCheck.position(checkX, centerY);
-    semiDismCheck.position(checkX, centerY + 50);
-    augCheck.position(checkX, centerY + 100);
-    minorMaj7ChordCheck.position(checkX, centerY + 150);
 }

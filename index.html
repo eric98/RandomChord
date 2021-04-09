@@ -1,13 +1,79 @@
 <html>
   <title>Random Chord - Eric Garcia</title>
   <head>
-    <h1>Random Chord - Eric Garcia</h1>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <script src="https://cdn.jsdelivr.net/npm/p5@1.3.1/lib/p5.js"></script>
     <script defer src=https://cdn.JsDelivr.net/npm/p5/lib/addons/p5.sound.min.js></script>
-    <script src="sketch.js"></script>
+    <!-- <script src="sketch.js"></script> -->
+    <!-- <script src="sketch2.js"></script> -->
+    <link rel="stylesheet" href="styles.css">
   </head>
+  <style>
+  </style>
   <body>
-    <main>
-    </main>
+    <h1 style="font-size:5vw">Random Chord</h1>
+
+    <div id="sketch-container"></div>
+
+    <br>
+    
+    <div class="flex-container">
+      <div style="flex-grow: 5">
+        <div class="slidecontainer">
+          <input type="range" min="40" max="208" value="80" class="slider" id="myRange">
+          <p style="font-size:18px;"><span id="demo"></span> bpm</p>
+        </div>
+      </div>
+      <div style="flex-grow: 1">
+        <label class="container" id="maj7">Metronome on/off
+          <input id="_maj7" type="checkbox">
+          <span class="checkmark" onclick="checkMaj7()"></span>
+        </label>
+        <label class="container" id="maj7">Pling at 1st beat
+          <input id="_maj7" type="checkbox">
+          <span class="checkmark" onclick="checkMaj7()"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="flex-container">
+      <div style="flex-grow: 1">
+        <label class="container" id="maj7">Δ (major 7)
+          <input id="_maj7" type="checkbox" checked="checked">
+          <span class="checkmark" onclick="checkMaj7()"></span>
+        </label>
+        <label class="container" id="dom">7 (dominant)
+          <input id="_dom" type="checkbox">
+          <span class="checkmark" onclick="check7()"></span>
+        </label>
+        <label class="container" id="min7">-7 (minor 7)
+          <input id="_min7" type="checkbox">
+          <span class="checkmark" onclick="checkMin7()"></span>
+        </label>
+        <label class="container" id="semiDism7">ø (semidism)
+          <input id="_semiDism7" type="checkbox">
+          <span class="checkmark" onclick="checkSemiDism()"></span>
+        </label>
+        <label class="container" id="aug7">7♯5 (aug 7)
+          <input id="_aug7" type="checkbox">
+          <span class="checkmark" onclick="checkAug7()"></span>
+        </label>
+        <label class="container" id="minMaj7">-Δ (minor maj 7)
+          <input id="_minMaj7" type="checkbox">
+          <span class="checkmark" onclick="checkMinorMaj7()"></span>
+        </label>
+      </div>
+      
+    </div>
+
+    <footer>
+      <p style="font-size:18px;">Made with 🎺❤ Eric Garcia</p>
+      <p style="font-size:16px;">@ergare17</p>
+    </footer>
+    
+    <!-- <script src="./model/Tonality.js"></script> -->
+    <script src="./main.js"></script>
+    <script src="sketch2.js"></script>
   </body>
 </html>
