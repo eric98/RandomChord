@@ -246,9 +246,9 @@ function randomTonality() {
         nextTonality = randTon();
     }
 
-    lastTonality.scale = 1;
-    nextTonality.scale = 1;
-    actualTonality.scale = 2;
+    lastTonality.scale = 1 * scalarToResize;
+    nextTonality.scale = 1 * scalarToResize;
+    actualTonality.scale = 2 * scalarToResize;
 }
 
 function activeMetronome() {
@@ -264,9 +264,41 @@ function preload() {
     // https://freesound.org/people/m1rk0/sounds/50071/
 }
 
+function windowResized() {
+
+    let desiredWidth = Math.max(parent.elt.offsetWidth, 600);
+
+    scalarToResize = desiredWidth/600;
+
+
+    // resizeCanvas(desiredWidth, 200);
+
+    location.reload();
+
+    // console.log(parent.elt.offsetWidth);
+}
+
 function setup() {
-    let can = createCanvas(600, 200);
+
+    parent = select('#sketch-container');
+    // console.log(parent.elt.offsetWidth);
+
+    lastWindowWidth = windowWidth;
+    console.log(lastWindowWidth);
+
+    // let can = createCanvas(600, 200);
+    let can = createCanvas(parent.elt.offsetWidth, 200);
     can.parent('sketch-container');
+
+    if (parent.elt.offsetWidth < 600) {
+        scalarToResize = parent.elt.offsetWidth/600;
+    }
+    else {
+        scalarToResize = 1;
+    }
+
+    // scalarToResize = 1;
+
 
     p5_maj = select('#_maj7');
     p5_dominant = select('#_dom');
@@ -274,6 +306,10 @@ function setup() {
     p5_semiDism = select('#_semiDism7');
     p5_aug = select('#_aug7');
     p5_minorMaj7Chord = select('#_minMaj7');
+
+    p5_maj.elt.checked = true;
+
+    metronomeActived = true;
 
     // button = createButton('Next Chord');
     // button.mousePressed(randomTonality);
@@ -285,6 +321,12 @@ function setup() {
     randomTonality();
     randomTonality();
 
+    tempoSlider = select('#myRange');
+    beatSlider = select('#beatsRange');
+
+    beatCounter = select('#myBeats');
+    beatCounter.elt.textContent = '1';
+
     // tempoSlider = createSlider(40, 208, 80);
     // tempoSlider.class('slider');
 
@@ -294,37 +336,39 @@ function setup() {
   
 function draw() {
 
-    background(255,0,0);
+    background(255);
     textSize(20);
 
-    let centerX = width/2 - 50;
-    let centerY = height/2 + 50;
+    let centerX = width/2 - 50 * scalarToResize;
+    let centerY = height/2 + 50 * scalarToResize;
 
-    let tonalityCenter = centerX - 50;
-    lastTonality.draw(tonalityCenter - 150, centerY);
+    let tonalityCenter = centerX - 50 * scalarToResize;
+    lastTonality.draw(tonalityCenter - 150 * scalarToResize, centerY);
     actualTonality.draw(tonalityCenter, centerY);
-    nextTonality.draw(tonalityCenter + 250, centerY);
+    nextTonality.draw(tonalityCenter + 250 * scalarToResize, centerY);
     
     let timeNow = millis();
   
     if (timeNow > nextKlack && metronomeActived) {
 
-        nextKlack = timeNow + 60000/tempoSlider.value();
+        nextKlack = timeNow + 60000/tempoSlider.elt.value;
         beatCount++;
-        beatCount = beatCount % beatSlider.value();
+        beatCount = beatCount % beatSlider.elt.value;
+
+        beatCounter.elt.textContent = beatCount + 1;
 
         if (beatCount == 0) {
             randomTonality();
 
             if (plingActived) {
-                pling.play();
+                // pling.play();
             }
             else  {
-                klack.play();
+                // klack.play();
             }
         }
         else {
-            klack.play();
+            // klack.play();
         }
 
     }

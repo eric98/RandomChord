@@ -7,26 +7,10 @@ slider.oninput = function() {
   output.innerHTML = this.value;
 }
 
-function checkMaj7() {
+var sliderBeats = document.getElementById("beatsRange");
+var outputBeats = document.getElementById("beatsSpan");
+outputBeats.innerHTML = sliderBeats.value;
 
-}
-
-function check7() {
-
-}
-
-function checkMin7() {
-
-}
-
-function checkSemiDism() {
-
-}
-
-function checkAug7() {
-
-}
-
-function checkMinorMaj7() {
-
+sliderBeats.oninput = function() {
+    outputBeats.innerHTML = this.value;
 }

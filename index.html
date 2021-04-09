@@ -14,10 +14,18 @@
   <body>
     <h1 style="font-size:5vw">Random Chord</h1>
 
-    <div id="sketch-container"></div>
+    <div class="flex-container">
+      <div style="flex-grow: 4">
+        <div id="sketch-container"></div>
+      </div>
+      <div style="flex-grow: 1">
+        <p id="myBeats" style="font-size:38px; text-align: left;">1</div>
+      </div>
+    </div>
+
 
     <br>
-    
+
     <div class="flex-container">
       <div style="flex-grow: 5">
         <div class="slidecontainer">
@@ -25,13 +33,19 @@
           <p style="font-size:18px;"><span id="demo"></span> bpm</p>
         </div>
       </div>
+      <div style="flex-grow: 5">
+        <div class="slidecontainer">
+          <input type="range" min="1" max="16" value="4" class="slider" id="beatsRange">
+          <p style="font-size:18px;"><span id="beatsSpan"></span> beats</p>
+        </div>
+      </div>
       <div style="flex-grow: 1">
-        <label class="container" id="maj7">Metronome on/off
-          <input id="_maj7" type="checkbox">
+        <label class="container" id="metronome">Metronome on/off
+          <input id="_metronome" type="checkbox">
           <span class="checkmark" onclick="checkMaj7()"></span>
         </label>
-        <label class="container" id="maj7">Pling at 1st beat
-          <input id="_maj7" type="checkbox">
+        <label class="container" id="pling">Pling at 1st beat
+          <input id="_pling" type="checkbox">
           <span class="checkmark" onclick="checkMaj7()"></span>
         </label>
       </div>
@@ -40,7 +54,7 @@
     <div class="flex-container">
       <div style="flex-grow: 1">
         <label class="container" id="maj7">Δ (major 7)
-          <input id="_maj7" type="checkbox" checked="checked">
+          <input id="_maj7" type="checkbox">
           <span class="checkmark" onclick="checkMaj7()"></span>
         </label>
         <label class="container" id="dom">7 (dominant)
