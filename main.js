@@ -82,6 +82,9 @@ chordStep();
 chordStep();
 chordStep();
 
+var metronomeElt = document.getElementById("_metronome");
+var plingElt = document.getElementById("_pling");
+
 function chordStep() {
 
   lastChord.setChord(actualChord);
@@ -109,7 +112,7 @@ function tick() {
 
     timeNow += deltaTime;
 
-    if (timeNow > nextKlack) {
+    if (metronomeElt.checked && timeNow > nextKlack) {
 
       nextKlack = timeNow + 60000/slider.value;
 
@@ -121,15 +124,15 @@ function tick() {
       if (beatCount == 0) {
         chordStep();
 
-        // if (plingActived) {
-        //     // pling.play();
-        // }
-        // else  {
-        //     // klack.play();
-        // }
+        if (plingElt.checked) {
+            pling.play();
+        }
+        else  {
+            klack.play();
+        }
     }
     else {
-        // klack.play();
+        klack.play();
     }
 
   }
@@ -228,4 +231,27 @@ function getSemitone(tone, alter) {
   }
 
   return result + alter;
+}
+
+var klack;
+var pling;
+var loadedSounds = false;
+
+function loadSounds() {
+  klack = new Audio('metronom-klack.mp3');
+  pling = new Audio('metronom-pling.mp3');
+
+  // Sound recording by Mirko Horstmann via freesound.org
+  // https://freesound.org/people/m1rk0/sounds/50070/
+  // https://freesound.org/people/m1rk0/sounds/50071/
+}
+
+function checkMetronome() {
+
+  if (!loadedSounds) {
+    loadSounds();
+
+    loadedSounds = true;
+  }
+
 }
