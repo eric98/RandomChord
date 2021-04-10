@@ -248,6 +248,9 @@ function loadSounds() {
   // pling = new Audio('metronom-pling.mp3');
   pling = new Audio('metronom-pling.wav');
 
+  klack.volume = 0.03;
+  pling.volume = 0.02;
+
   // Sound recording by Mirko Horstmann via freesound.org
   // https://freesound.org/people/m1rk0/sounds/50070/
   // https://freesound.org/people/m1rk0/sounds/50071/

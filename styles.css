@@ -152,6 +152,10 @@ div {text-align: center;}
   text-align: left;
 }
 
+#imagesDiv {
+  background:#d3ccdd;
+}
+
 .chordName {
   text-align: center;
   vertical-align: middle;
@@ -162,10 +166,10 @@ div {text-align: center;}
   text-align: center;
   /* vertical-align: middle; */
   /* display: table-cell; */
+  font-size: 45px;
 }
 
 #myBeatsDiv {
-  font-size: 30px;
   /* vertical-align: text-bottom; */
 
   /* position: absolute; */
@@ -177,4 +181,24 @@ div {text-align: center;}
   /* vertical-align: middle; */
   /* display: table; */
   background:#ddcccc;
+}
+
+a:link {
+  text-decoration: none;
+  color: #4CAF50;
+}
+
+a:visited {
+  text-decoration: none;
+  color: #4CAF50;
+}
+
+a:hover {
+  text-decoration: none;
+  color: rgb(43, 117, 74);
+}
+
+a:active {
+  text-decoration: none;
+  color: #4CAF50;
 }
