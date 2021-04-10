@@ -202,3 +202,11 @@ a:active {
   text-decoration: none;
   color: #4CAF50;
 }
+
+.custom-select {
+  font-size: 18px;
+}
+
+#_fifthProgression {
+  vertical-align: middle;
+}

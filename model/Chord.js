@@ -70,10 +70,15 @@ class Chord {
     }
 
     play() {
-        audioNotes[this.semitone].audio.play();
-        audioNotes[this.semitone + this.semitoneTo3].audio.play();
-        audioNotes[this.semitone + this.semitoneTo5].audio.play();
-        audioNotes[this.semitone + this.semitoneTo7].audio.play();
+
+        if (backTrack.checked) {
+
+            audioNotes[this.semitone].audio.play();
+            audioNotes[this.semitone + this.semitoneTo3].audio.play();
+            audioNotes[this.semitone + this.semitoneTo5].audio.play();
+            audioNotes[this.semitone + this.semitoneTo7].audio.play();
+        }
+
     }
 
     setRandomMode() {
@@ -301,19 +306,86 @@ class Chord {
         }
 
         this.setNote(nextName, nextAlteration);
-
+        this.setRandomMode();
     }
 
     draw() {
-        this.elt.innerHTML = this.name+"<sup>"+this.alteration+"</sup><sub>"+this.mode+"</sub>";
+        
+        let desiredSemitone = this.semitone + parseInt(pitch.value);
+        desiredSemitone += 12;
+        desiredSemitone %= 12;
+        desiredSemitone -= 12;
 
+        let desiredName;
+        let desiredAlteration;
+
+        if (desiredSemitone < -9) {
+            desiredSemitone += 12;
+        }
+
+        switch (desiredSemitone) {
+            case 0:
+                desiredName = 'A';
+                desiredAlteration = 0;
+                break;
+            case 1:
+                desiredName = 'B';
+                desiredAlteration = -1;
+                break;
+            case 2:
+                desiredName = 'B';
+                desiredAlteration = 0;
+                break;
+            case -9:
+                desiredName = 'C';
+                desiredAlteration = 0;
+                break;
+            case -8:
+                desiredName = 'D';
+                desiredAlteration = -1;
+                break;
+            case -7:
+                desiredName = 'D';
+                desiredAlteration = 0;
+                break;
+            case -6:
+                desiredName = 'E';
+                desiredAlteration = -1;
+                break;
+            case -5:
+                desiredName = 'E';
+                desiredAlteration = 0;
+                break;
+            case -4:
+                desiredName = 'F';
+                desiredAlteration = 0;
+                break;
+            case -3:
+                desiredName = 'F';
+                desiredAlteration = 1;
+                break;
+            case -2:
+                desiredName = 'G';
+                desiredAlteration = 0;
+                break;
+            case -1:
+                desiredName = 'A';
+                desiredAlteration = -1;
+                break;
+        }
+
+        let desiredAuxAlteration = "";
         let auxAlteration = "";
-        if (this.alteration == "♭") {
+        if (desiredAlteration == -1) {
             auxAlteration = "b";
+            desiredAuxAlteration = "♭";
         }
-        else if (this.alteration == "♯") {
+        else if (desiredAlteration == 1) {
             auxAlteration = "is";
+            desiredAuxAlteration = "♯";
         }
+
+        this.elt.innerHTML = desiredName+"<sup>"+desiredAuxAlteration+"</sup><sub>"+this.mode+"</sub>";
 
         let auxChord = "";
         if (this.mode == "Δ") {
@@ -338,21 +410,21 @@ class Chord {
         let prevName;
         let nextName;
 
-        if (this.name == "E" && this.alteration == "♭") {
+        if (desiredName == "E" && desiredAlteration == -1) {
             prevName = "D";
             nextName = "DisE";
         }
-        else if (this.name == "A" && this.alteration == "♭") {
+        else if (desiredName == "A" && desiredAlteration == -1) {
             prevName = "G";
             nextName = "GisA";
         }
-        else if (this.name == "B" && this.alteration == "♭") {
+        else if (desiredName == "B" && desiredAlteration == -1) {
             prevName = "A";
             nextName = "AisB";
         }
         else {
-            prevName = this.name;
-            nextName = this.name;
+            prevName = desiredName;
+            nextName = desiredName;
         }
 
         let imgChordName = prevName + "/" + nextName + auxAlteration + auxChord + ".gif";

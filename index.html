@@ -7,12 +7,49 @@
     <!-- <script defer src=https://cdn.JsDelivr.net/npm/p5/lib/addons/p5.sound.min.js></script> -->
     <!-- <script src="sketch.js"></script> -->
     <!-- <script src="sketch2.js"></script> -->
+    <script src="https://kit.fontawesome.com/7022758a88.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="styles.css">
   </head>
   <style>
   </style>
   <body>
-    <h1 style="font-size:5vw">Random Chord</h1>
+    
+    <div class="flex-container">
+
+      <div style="flex-grow: 1">
+        <h1 style="font-size:4vw">Random Chord</h1>
+      </div>
+
+      <div style="flex-grow: 1">
+        <br>
+        <label class="container" id="backTrack">
+          <i class="fas fa-music"></i>
+          <i class="fas fa-guitar"></i>
+          <i class="fas fa-drum"></i>
+          <input id="_backTrack" type="checkbox">
+          <span class="checkmark"></span>
+        </label>
+        
+      </div>
+
+      <div style="flex-grow: 1">
+        <br>
+        <label class="container" id="fifthProgression">5<sup>th</sup> progression
+          <input id="_fifthProgression" type="checkbox">
+          <span class="checkmark"></span>
+        </label>
+      </div>
+
+      <div style="flex-grow: 1">
+        <br>
+        <label class="container" id="images" onclick="enableImages()">Images
+          <input id="_images" type="checkbox">
+          <span class="checkmark"></span>
+        </label>
+        
+      </div>
+      
+    </div>
     
     <div class="flex-container">
 
@@ -44,28 +81,54 @@
       </div>
 
       <div id="myBeatsDiv" style="flex-grow: 1">
+        <br>
+        <div class="custom-select">
+          Pitch Tone   
+          <select id="pitch" onchange="draw()">
+            <option value="0">C</option>
+            <option value="1">B</option>
+            <option value="2">B♭</option>
+            <option value="3">A</option>
+            <option value="4">G♯</option>
+            <option value="5">G</option>
+            <option value="6">F♯</option>
+            <option value="7">F</option>
+            <option value="8">E</option>
+            <option value="9">D</option>
+            <option value="10">C♯</option>
+          </select>
+        </div>
         <p id="myBeats">1</p>
-        
-        <label class="container" id="fifthProgression">Fifth progression
-          <input id="_fifthProgression" type="checkbox">
-          <span class="checkmark"></span>
-        </label>
-
-        <label class="container" id="images" onclick="enableImages()">Images
-          <input id="_images" type="checkbox">
-          <span class="checkmark"></span>
-        </label>
       </div>
-
-      </div>
-      
 
     </div>
 
-
-    <br>
-
+    
+    Metronome: <br>
     <div class="flex-container">
+      <div style="flex-grow: 1">
+        <label class="container" id="metronome" onclick="checkMetronome()">
+          <i class="fas fa-play"></i>
+          <input id="_metronome" type="checkbox">
+          <span class="checkmark"></span>
+        </label>
+      </div>
+      <div style="flex-grow: 1">
+        <label class="container" id="pling" onclick="checkMetronome()">
+          <i class="fas fa-bell"></i>
+          1<sup>st</sup>
+          <input id="_pling" type="checkbox">
+          <span class="checkmark"></span>
+        </label>
+      </div>
+      <div style="flex-grow: 1">
+        <label class="container" id="metronomeSound" onclick="checkMetronome()">
+          <i class="fas fa-volume-up"></i>
+          <input id="_metronomeSound" type="checkbox">
+          <span class="checkmark"></span>
+        </label>
+      </div>
+
       <div style="flex-grow: 5">
         <div class="slidecontainer">
           <input type="range" min="40" max="208" value="80" class="slider" id="myRange">
@@ -78,22 +141,10 @@
           <p style="font-size:18px;"><span id="beatsSpan"></span> beats</p>
         </div>
       </div>
-      <div style="flex-grow: 1">
-        <label class="container" id="metronome" onclick="checkMetronome()">Metronome on/off
-          <input id="_metronome" type="checkbox">
-          <span class="checkmark"></span>
-        </label>
-        <label class="container" id="metronomeSound" onclick="checkMetronome()">Metronome sound on/off
-          <input id="_metronomeSound" type="checkbox">
-          <span class="checkmark"></span>
-        </label>
-        <label class="container" id="pling" onclick="checkMetronome()">Pling at 1st beat
-          <input id="_pling" type="checkbox">
-          <span class="checkmark"></span>
-        </label>
-      </div>
+
     </div>
 
+    Chords: <br>
     <div class="flex-container">
       <div style="flex-grow: 1">
         <label class="container" id="maj7" onclick="checkMaj7()">Δ (major 7)
