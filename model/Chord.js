@@ -8,30 +8,72 @@ class Chord {
         this.name = "D";
         this.alteration = "♭";
         this.mode = "Δ";
+        this.semitone = -8;
+
+        this.semitoneTo3 = 4;
+        this.semitoneTo5 = 7;
+        this.semitoneTo7 = 11;
     }
 
     setMaj7() {
         this.mode = 'Δ';
+        this.semitoneTo3 = 4;
+        this.semitoneTo5 = 7;
+        this.semitoneTo7 = 11;
     }
 
     setDominant() {
         this.mode = '7';
+        this.semitoneTo3 = 4;
+        this.semitoneTo5 = 7;
+        this.semitoneTo7 = 10;
     }
 
     setMinor() {
         this.mode = '-7';
+        this.semitoneTo3 = 3;
+        this.semitoneTo5 = 7;
+        this.semitoneTo7 = 10;
     }
 
     setSemiDism() {
         this.mode = 'ø';
+        this.semitoneTo3 = 3;
+        this.semitoneTo5 = 6;
+        this.semitoneTo7 = 10;
     }
 
     setAug() {
         this.mode = '7♯5';
+        this.semitoneTo3 = 4;
+        this.semitoneTo5 = 8;
+        this.semitoneTo7 = 10;
     }
 
     setMinorMaj7() {
         this.mode = '-Δ';
+        this.semitoneTo3 = 3;
+        this.semitoneTo5 = 7;
+        this.semitoneTo7 = 11;
+    }
+
+    clearAudio() {
+        audioNotes[this.semitone].audio.pause();
+        audioNotes[this.semitone + this.semitoneTo3].audio.pause();
+        audioNotes[this.semitone + this.semitoneTo5].audio.pause();
+        audioNotes[this.semitone + this.semitoneTo7].audio.pause();
+
+        audioNotes[this.semitone].audio.currentTime = 0;
+        audioNotes[this.semitone + this.semitoneTo3].audio.currentTime = 0;
+        audioNotes[this.semitone + this.semitoneTo5].audio.currentTime = 0;
+        audioNotes[this.semitone + this.semitoneTo7].audio.currentTime = 0;
+    }
+
+    play() {
+        audioNotes[this.semitone].audio.play();
+        audioNotes[this.semitone + this.semitoneTo3].audio.play();
+        audioNotes[this.semitone + this.semitoneTo5].audio.play();
+        audioNotes[this.semitone + this.semitoneTo7].audio.play();
     }
 
     setRandomMode() {
@@ -71,56 +113,92 @@ class Chord {
     setNote(_name, _alteration) {
         if (_name == 'C' && _alteration == 1) {
             this.name = 'D';
-            this.alteration = "♭"; 
+            this.alteration = "♭";
+            this.semitone = -8;
             return;
         }
 
         if (_name == 'D' && _alteration == 1) {
             this.name = 'E';
             this.alteration = "♭"; 
+            this.semitone = -6;
             return;
         }
 
         if (_name == 'G' && _alteration == -1) {
             this.name = 'F';
-            this.alteration = "♯"; 
+            this.alteration = "♯";
+            this.semitone = -3;
             return;
         }
 
         if (_name == 'G' && _alteration == 1) {
             this.name = 'A';
-            this.alteration = "♭"; 
+            this.alteration = "♭";
+            this.semitone = -1;
             return;
         }
 
         if (_name == 'A' && _alteration == 1) {
             this.name = 'B';
-            this.alteration = "♭"; 
+            this.alteration = "♭";
+            this.semitone = 1;
             return;
         }
 
         // semitones E - F && B - C
         if (_name == 'E' && _alteration == 1) {
             this.name = 'F';
-            this.alteration = ""; 
+            this.alteration = "";
+            this.semitone = -4;
             return;
         }
         if (_name == 'F' && _alteration == -1) {
             this.name = 'E';
             this.alteration = ""; 
+            this.semitone = -5;
             return;
         }
         if (_name == 'B' && _alteration == 1) {
             this.name = 'C';
             this.alteration = ""; 
+            this.semitone = -9;
             return;
         }
         if (_name == 'C' && _alteration == -1) {
             this.name = 'B';
             this.alteration = ""; 
+            this.semitone = 2;
             return;
         }
 
+        let semi;
+        switch (_name) {
+            case "A":
+                semi = 0;
+                break;
+            case "B":
+                semi = 2;
+                break;
+            case "C":
+                semi = -9;
+                break;
+            case "D":
+                semi = -7;
+                break;
+            case "E":
+                semi = -5;
+                break;
+            case "F":
+                semi = -4;
+                break;
+            case "G":
+                semi = -2;
+                break;
+        }
+
+        this.semitone = semi + _alteration;
+        
         this.name = _name;
         if (_alteration == 1) {
             this.alteration = "♯"; 
@@ -141,9 +219,14 @@ class Chord {
     }
 
     setChord(_chord) {
+        if (loadedSounds) {
+            this.clearAudio();
+        }
+
         this.name = _chord.name;
         this.alteration = _chord.alteration;
         this.mode = _chord.mode;
+        this.semitone = _chord.semitone;
     }
 
     setRandomChord() {
