@@ -53,6 +53,18 @@ var nextKlack = 0;
 var myBeats = document.getElementById("myBeats");
 var beatCount = 0;
 
+var lastElt = document.getElementById("_lastChord");
+var actualElt = document.getElementById("_actualChord");
+var nextElt = document.getElementById("_nextChord");
+
+var lastChord = new Chord(lastElt, lastImage);
+var actualChord = new Chord(actualElt, actualImage);
+var nextChord = new Chord(nextElt, nextImage);
+
+function randomTonality() {
+  nextChord.draw();
+}
+
 function tick() {
     // var now = Date.now();
     // var dt = now - lastUpdate;
@@ -72,7 +84,19 @@ function tick() {
 
       myBeats.textContent = beatCount + 1;
 
-      // console.log(sliderBeats.value)
+      if (beatCount == 0) {
+        randomTonality();
+
+        // if (plingActived) {
+        //     // pling.play();
+        // }
+        // else  {
+        //     // klack.play();
+        // }
+    }
+    else {
+        // klack.play();
+    }
 
   }
 }

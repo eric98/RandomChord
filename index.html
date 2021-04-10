@@ -3,8 +3,8 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <script src="https://cdn.jsdelivr.net/npm/p5@1.3.1/lib/p5.js"></script>
-    <script defer src=https://cdn.JsDelivr.net/npm/p5/lib/addons/p5.sound.min.js></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/p5@1.3.1/lib/p5.js"></script> -->
+    <!-- <script defer src=https://cdn.JsDelivr.net/npm/p5/lib/addons/p5.sound.min.js></script> -->
     <!-- <script src="sketch.js"></script> -->
     <!-- <script src="sketch2.js"></script> -->
     <link rel="stylesheet" href="styles.css">
@@ -32,19 +32,24 @@
 
         <div class="flex-container">
           <div id="lastChord" class="chord" style="flex-grow: 4">
-            <p class="chordName">A<sup>♭</sup><sub>7♯5</sub></p>
+            <p id="_lastChord" class="chordName">A<sup>♭</sup><sub>7♯5</sub></p>
           </div>
           <div id="actualChord" class="chord" style="flex-grow: 4">
-            <p class="chordName">C<sup>♭</sup><sub>-Δ</sub></p>
+            <p id="_actualChord" class="chordName">C<sup>♭</sup><sub>-Δ</sub></p>
           </div>
           <div id="nextChord" class="chord" style="flex-grow: 4">
-            <p class="chordName">F<sup>♭</sup><sub>7♯5</sub></p>
+            <p id="_nextChord" class="chordName">F<sup>♭</sup><sub>7♯5</sub></p>
           </div>
         </div>
       </div>
 
       <div id="myBeatsDiv" style="flex-grow: 1">
         <p id="myBeats" style="font-size:38px">1</p>
+        
+        <label class="container" id="fifthProgression">Fifth progression
+          <input id="_fifthProgression" type="checkbox">
+          <span class="checkmark"></span>
+        </label>
 
         <label class="container" id="images" onclick="enableImages()">Images
           <input id="_images" type="checkbox">
@@ -121,6 +126,7 @@
     </footer>
     
     <!-- <script src="./model/Tonality.js"></script> -->
+    <script src="./model/Chord.js"></script>
     <script src="./main.js"></script>
     <!-- <script src="sketch2.js"></script> -->
   </body>
