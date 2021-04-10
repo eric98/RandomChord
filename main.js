@@ -83,8 +83,9 @@ chordStep();
 chordStep();
 
 var metronomeElt = document.getElementById("_metronome");
+var metronomeSoundElt = document.getElementById("_metronomeSound");
 var plingElt = document.getElementById("_pling");
-
+metronomeSoundElt.checked = true;
 function chordStep() {
 
   lastChord.setChord(actualChord);
@@ -124,16 +125,21 @@ function tick() {
       if (beatCount == 0) {
         chordStep();
 
-        if (plingElt.checked) {
+        if (metronomeSoundElt.checked) {
+          if (plingElt.checked) {
+            
+            pling.pause();
+            pling.currentTime = 0;
             pling.play();
-        }
-        else  {
+          }
+          else  {
             klack.play();
+          }
         }
-    }
-    else {
+      }
+      else if (metronomeSoundElt.checked) {
         klack.play();
-    }
+      }
 
   }
 }
@@ -239,11 +245,90 @@ var loadedSounds = false;
 
 function loadSounds() {
   klack = new Audio('metronom-klack.mp3');
-  pling = new Audio('metronom-pling.mp3');
+  // pling = new Audio('metronom-pling.mp3');
+  pling = new Audio('metronom-pling.wav');
 
   // Sound recording by Mirko Horstmann via freesound.org
   // https://freesound.org/people/m1rk0/sounds/50070/
   // https://freesound.org/people/m1rk0/sounds/50071/
+
+
+  // var notes = {
+  //   "1C": new Howl({
+  //       urls: ["media/523-C.mp3"]
+  //   }),
+  //   "1Cs": new Howl({
+  //       urls: ["media/545-C-sharp.mp3"]
+  //   }),
+  //   "1D": new Howl({
+  //       urls: ["media/587-D.mp3"]
+  //   }),
+  //   "1Ds": new Howl({
+  //       urls: ["media/622-D-sharp.mp3"]
+  //   }),
+  //   "1E": new Howl({
+  //       urls: ["media/659-E.mp3"]
+  //   }),
+  //   "1F": new Howl({
+  //       urls: ["media/698-F.mp3"]
+  //   }),
+  //   "1Fs": new Howl({
+  //       urls: ["media/698-F-sharp.mp3"]
+  //   }),
+  //   "1G": new Howl({
+  //       urls: ["media/783-G.mp3"]
+  //   }),
+  //   "1Gs": new Howl({
+  //       urls: ["media/830-G-sharp.mp3"]
+  //   }),
+  //   "2A": new Howl({
+  //       urls: ["media/880-A.mp3"]
+  //   }),
+  //   "2As": new Howl({
+  //       urls: ["media/932-A-sharp.mp3"]
+  //   }),
+  //   "2B": new Howl({
+  //       urls: ["media/987-B.mp3"]
+  //   }),
+  //   "2C": new Howl({
+  //       urls: ["media/1046-C.mp3"]
+  //   }),
+  //   "2Cs": new Howl({
+  //       urls: ["media/1090-C-sharp.mp3"]
+  //   }),
+  //   "2D": new Howl({
+  //       urls: ["media/1174-D.mp3"]
+  //   }),
+  //   "2Ds": new Howl({
+  //       urls: ["media/1244-D-sharp.mp3"]
+  //   }),
+  //   "2E": new Howl({
+  //       urls: ["media/1318-E.mp3"]
+  //   }),
+  //   "2F": new Howl({
+  //       urls: ["media/1396-F.mp3"]
+  //   }),
+  //   "2Fs": new Howl({
+  //       urls: ["media/1396-F-sharp.mp3"]
+  //   }),
+  //   "2G": new Howl({
+  //       urls: ["media/1566-G.mp3"]
+  //   }),
+  //   "2Gs": new Howl({
+  //       urls: ["media/1660-G-sharp.mp3"]
+  //   }),
+  //   "3A": new Howl({
+  //       urls: ["media/1760-A.mp3"]
+  //   }),
+  //   "3As": new Howl({
+  //       urls: ["media/1864-A-sharp.mp3"]
+  //   }),
+  //   "3B": new Howl({
+  //       urls: ["media/1974-B.mp3"]
+  //   })
+  // },
+
+  // https://www.musiklehre.at/all_piano_chords/
 }
 
 function checkMetronome() {
