@@ -105,9 +105,8 @@ function chordStep() {
     nextChord.setRandomChord();
   }
 
-  // nextChord.setNote('A',0);
-
   if (loadedSounds) {
+    actualChord.printChordNotes();
     actualChord.play();
   }
 
@@ -121,12 +120,6 @@ function draw() {
 }
 
 function tick() {
-    // var now = Date.now();
-    // var dt = now - lastUpdate;
-    // lastUpdate = now;
-
-    // update(dt);
-    // render(dt);
 
     timeNow += deltaTime;
 

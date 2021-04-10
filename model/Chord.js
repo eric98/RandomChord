@@ -69,6 +69,16 @@ class Chord {
         audioNotes[this.semitone + this.semitoneTo7].audio.currentTime = 0;
     }
 
+    printChordNotes() {
+        if (backTrack.checked) {
+
+            console.log(audioNotes[this.semitone].name);
+            console.log(audioNotes[this.semitone + this.semitoneTo3].name);
+            console.log(audioNotes[this.semitone + this.semitoneTo5].name);
+            console.log(audioNotes[this.semitone + this.semitoneTo7].name);
+        }
+    }
+
     play() {
 
         if (backTrack.checked) {
@@ -232,6 +242,10 @@ class Chord {
         this.alteration = _chord.alteration;
         this.mode = _chord.mode;
         this.semitone = _chord.semitone;
+
+        this.semitoneTo3 = _chord.semitoneTo3;
+        this.semitoneTo5 = _chord.semitoneTo5;
+        this.semitoneTo7 = _chord.semitoneTo7;
     }
 
     setRandomChord() {

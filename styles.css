@@ -72,18 +72,7 @@ div {text-align: center;}
 
 .flex-container {
   display: flex;
-  /* align-items: stretch; */
-  /* background-color: #f1f1f1; */
 }
-
-/* .flex-container > div {
-  background-color: DodgerBlue;
-  color: white;
-  margin: 10px;
-  text-align: center;
-  line-height: 75px;
-  font-size: 30px;
-} */
 
 .slidecontainer {
   width: 100%;
@@ -128,13 +117,6 @@ div {text-align: center;}
 
 .chord {
   font-size: 30px;
-  /* vertical-align: text-bottom; */
-
-  /* position: absolute; */
-  /* bottom: 0; */
-  /* right: 0; */
-
-  /* width:300px; */
   height:100px;
   display: table;
   background:#ccddcc;
@@ -164,22 +146,10 @@ div {text-align: center;}
 
 #myBeats {
   text-align: center;
-  /* vertical-align: middle; */
-  /* display: table-cell; */
   font-size: 45px;
 }
 
 #myBeatsDiv {
-  /* vertical-align: text-bottom; */
-
-  /* position: absolute; */
-  /* bottom: 0; */
-  /* right: 0; */
-
-  /* height:100px; */
-  /* text-align: center; */
-  /* vertical-align: middle; */
-  /* display: table; */
   background:#ddcccc;
 }
 
