@@ -13,14 +13,48 @@
   </style>
   <body>
     <h1 style="font-size:5vw">Random Chord</h1>
-
+    
     <div class="flex-container">
-      <div style="flex-grow: 4">
-        <div id="sketch-container"></div>
-      </div>
+
       <div style="flex-grow: 1">
-        <p id="myBeats" style="font-size:38px; text-align: left;">1</div>
+        <!-- <div id="sketch-container"></div> -->
+        <div id="imagesDiv" class="flex-container">
+          <div class="chord" style="flex-grow: 4">
+            <img id="lastImage" src="https://www.musiklehre.at/all_piano_chords/img/F/Fismaj7.gif">
+          </div>
+          <div class="chord" style="flex-grow: 4">
+            <img id="actualImage" src="https://www.musiklehre.at/all_piano_chords/img/F/Fismaj7.gif">
+          </div>
+          <div class="chord" style="flex-grow: 4">
+            <img id="nextImage" src="https://www.musiklehre.at/all_piano_chords/img/F/Fismaj7.gif">
+          </div>
+        </div>
+
+        <div class="flex-container">
+          <div id="lastChord" class="chord" style="flex-grow: 4">
+            <p class="chordName">A<sup>♭</sup><sub>7♯5</sub></p>
+          </div>
+          <div id="actualChord" class="chord" style="flex-grow: 4">
+            <p class="chordName">C<sup>♭</sup><sub>-Δ</sub></p>
+          </div>
+          <div id="nextChord" class="chord" style="flex-grow: 4">
+            <p class="chordName">F<sup>♭</sup><sub>7♯5</sub></p>
+          </div>
+        </div>
       </div>
+
+      <div id="myBeatsDiv" style="flex-grow: 1">
+        <p id="myBeats" style="font-size:38px">1</p>
+
+        <label class="container" id="images" onclick="enableImages()">Images
+          <input id="_images" type="checkbox">
+          <span class="checkmark"></span>
+        </label>
+      </div>
+
+      </div>
+      
+
     </div>
 
 
@@ -88,6 +122,6 @@
     
     <!-- <script src="./model/Tonality.js"></script> -->
     <script src="./main.js"></script>
-    <script src="sketch2.js"></script>
+    <!-- <script src="sketch2.js"></script> -->
   </body>
 </html>
