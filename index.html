@@ -1,13 +1,139 @@
 <html>
   <title>Random Chord - Eric Garcia</title>
   <head>
-    <h1>Random Chord - Eric Garcia</h1>
-    <script src="https://cdn.jsdelivr.net/npm/p5@1.3.1/lib/p5.js"></script>
-    <script defer src=https://cdn.JsDelivr.net/npm/p5/lib/addons/p5.sound.min.js></script>
-    <script src="sketch.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- <script src="https://cdn.jsdelivr.net/npm/p5@1.3.1/lib/p5.js"></script> -->
+    <!-- <script defer src=https://cdn.JsDelivr.net/npm/p5/lib/addons/p5.sound.min.js></script> -->
+    <!-- <script src="sketch.js"></script> -->
+    <!-- <script src="sketch2.js"></script> -->
+    <link rel="stylesheet" href="styles.css">
   </head>
+  <style>
+  </style>
   <body>
-    <main>
-    </main>
+    <h1 style="font-size:5vw">Random Chord</h1>
+    
+    <div class="flex-container">
+
+      <div style="flex-grow: 1">
+        <!-- <div id="sketch-container"></div> -->
+        <div id="imagesDiv" class="flex-container">
+          <div class="chord" style="flex-grow: 4">
+            <img id="lastImage" src="https://www.musiklehre.at/all_piano_chords/img/F/Fismaj7.gif">
+          </div>
+          <div class="chord" style="flex-grow: 4">
+            <img id="actualImage" src="https://www.musiklehre.at/all_piano_chords/img/F/Fismaj7.gif">
+          </div>
+          <div class="chord" style="flex-grow: 4">
+            <img id="nextImage" src="https://www.musiklehre.at/all_piano_chords/img/F/Fismaj7.gif">
+          </div>
+        </div>
+
+        <div class="flex-container">
+          <div id="lastChord" class="chord" style="flex-grow: 4">
+            <p id="_lastChord" class="chordName">A<sup>♭</sup><sub>7♯5</sub></p>
+          </div>
+          <div id="actualChord" class="chord" style="flex-grow: 4">
+            <p id="_actualChord" class="chordName">C<sup>♭</sup><sub>-Δ</sub></p>
+          </div>
+          <div id="nextChord" class="chord" style="flex-grow: 4">
+            <p id="_nextChord" class="chordName">F<sup>♭</sup><sub>7♯5</sub></p>
+          </div>
+        </div>
+      </div>
+
+      <div id="myBeatsDiv" style="flex-grow: 1">
+        <p id="myBeats">1</p>
+        
+        <label class="container" id="fifthProgression">Fifth progression
+          <input id="_fifthProgression" type="checkbox">
+          <span class="checkmark"></span>
+        </label>
+
+        <label class="container" id="images" onclick="enableImages()">Images
+          <input id="_images" type="checkbox">
+          <span class="checkmark"></span>
+        </label>
+      </div>
+
+      </div>
+      
+
+    </div>
+
+
+    <br>
+
+    <div class="flex-container">
+      <div style="flex-grow: 5">
+        <div class="slidecontainer">
+          <input type="range" min="40" max="208" value="80" class="slider" id="myRange">
+          <p style="font-size:18px;"><span id="demo"></span> bpm</p>
+        </div>
+      </div>
+      <div style="flex-grow: 5">
+        <div class="slidecontainer">
+          <input type="range" min="1" max="16" value="4" class="slider" id="beatsRange">
+          <p style="font-size:18px;"><span id="beatsSpan"></span> beats</p>
+        </div>
+      </div>
+      <div style="flex-grow: 1">
+        <label class="container" id="metronome" onclick="checkMetronome()">Metronome on/off
+          <input id="_metronome" type="checkbox">
+          <span class="checkmark"></span>
+        </label>
+        <label class="container" id="metronomeSound" onclick="checkMetronome()">Metronome sound on/off
+          <input id="_metronomeSound" type="checkbox">
+          <span class="checkmark"></span>
+        </label>
+        <label class="container" id="pling" onclick="checkMetronome()">Pling at 1st beat
+          <input id="_pling" type="checkbox">
+          <span class="checkmark"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="flex-container">
+      <div style="flex-grow: 1">
+        <label class="container" id="maj7" onclick="checkMaj7()">Δ (major 7)
+          <input id="_maj7" type="checkbox">
+          <span class="checkmark"></span>
+        </label>
+        <label class="container" id="dom" onclick="check7()">7 (dominant)
+          <input id="_dom" type="checkbox">
+          <span class="checkmark"></span>
+        </label>
+        <label class="container" id="min7" onclick="checkMin7()">-7 (minor 7)
+          <input id="_min7" type="checkbox">
+          <span class="checkmark"></span>
+        </label>
+        <label class="container" id="semiDism7" onclick="checkSemiDism()">ø (semidism)
+          <input id="_semiDism7" type="checkbox">
+          <span class="checkmark"></span>
+        </label>
+        <label class="container" id="aug7" onclick="checkAug7()">7♯5 (aug 7)
+          <input id="_aug7" type="checkbox">
+          <span class="checkmark"></span>
+        </label>
+        <label class="container" id="minMaj7" onclick="checkMinorMaj7()">-Δ (minor maj 7)
+          <input id="_minMaj7" type="checkbox">
+          <span class="checkmark"></span>
+        </label>
+      </div>
+      
+    </div>
+
+    <footer>
+      <p style="font-size:20px;">Made with 🎺❤ by <a href="https://www.instagram.com/ergare17/" target="_blank">Eric Garcia</a></p>
+      <!-- <p style="font-size:16px;">@ergare17</p> -->
+      <br>
+      <p style="font-size:18px;">Resources from <a href="https://www.musiklehre.at/all_piano_chords/" target="_blank">Musiklehre</a> and <a href="https://freesound.org/" target="_blank">Freesound</a></p>
+    </footer>
+    
+    <!-- <script src="./model/Tonality.js"></script> -->
+    <script src="./model/Chord.js"></script>
+    <script src="./main.js"></script>
+    <!-- <script src="sketch2.js"></script> -->
   </body>
 </html>

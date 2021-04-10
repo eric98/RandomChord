@@ -153,6 +153,83 @@ let fifthsActived = true;
 
 let characters ='ABCDEFG';
 
+/*
+var notes = {
+                "1C": new Howl({
+                    urls: ["media/523-C.mp3"]
+                }),
+                "1Cs": new Howl({
+                    urls: ["media/545-C-sharp.mp3"]
+                }),
+                "1D": new Howl({
+                    urls: ["media/587-D.mp3"]
+                }),
+                "1Ds": new Howl({
+                    urls: ["media/622-D-sharp.mp3"]
+                }),
+                "1E": new Howl({
+                    urls: ["media/659-E.mp3"]
+                }),
+                "1F": new Howl({
+                    urls: ["media/698-F.mp3"]
+                }),
+                "1Fs": new Howl({
+                    urls: ["media/698-F-sharp.mp3"]
+                }),
+                "1G": new Howl({
+                    urls: ["media/783-G.mp3"]
+                }),
+                "1Gs": new Howl({
+                    urls: ["media/830-G-sharp.mp3"]
+                }),
+                "2A": new Howl({
+                    urls: ["media/880-A.mp3"]
+                }),
+                "2As": new Howl({
+                    urls: ["media/932-A-sharp.mp3"]
+                }),
+                "2B": new Howl({
+                    urls: ["media/987-B.mp3"]
+                }),
+                "2C": new Howl({
+                    urls: ["media/1046-C.mp3"]
+                }),
+                "2Cs": new Howl({
+                    urls: ["media/1090-C-sharp.mp3"]
+                }),
+                "2D": new Howl({
+                    urls: ["media/1174-D.mp3"]
+                }),
+                "2Ds": new Howl({
+                    urls: ["media/1244-D-sharp.mp3"]
+                }),
+                "2E": new Howl({
+                    urls: ["media/1318-E.mp3"]
+                }),
+                "2F": new Howl({
+                    urls: ["media/1396-F.mp3"]
+                }),
+                "2Fs": new Howl({
+                    urls: ["media/1396-F-sharp.mp3"]
+                }),
+                "2G": new Howl({
+                    urls: ["media/1566-G.mp3"]
+                }),
+                "2Gs": new Howl({
+                    urls: ["media/1660-G-sharp.mp3"]
+                }),
+                "3A": new Howl({
+                    urls: ["media/1760-A.mp3"]
+                }),
+                "3As": new Howl({
+                    urls: ["media/1864-A-sharp.mp3"]
+                }),
+                "3B": new Howl({
+                    urls: ["media/1974-B.mp3"]
+                })
+            }
+*/
+
 function getSemitone(tone, alter) {
 
     let result = 0;
@@ -183,10 +260,12 @@ function getSemitone(tone, alter) {
     return result + alter;
 }
 
+function windowResized() {
+    resizeCanvas(windowWidth, windowHeight);
+}
+
 function getTone(semitone) {
     let sem = semitone % 12;
-
-    console.log('esperat: '+sem);
 
     let ton = 'A';
     let alter = 0;
@@ -251,7 +330,8 @@ function nextFifth(ton) {
 }
 
 function randTon() {
-    return new Tonality(characters.charAt(Math.floor(Math.random() * characters.length)),Math.floor(Math.random() * 3));
+    return new Tonality(getTone(Math.floor(Math.random() * 12)));
+    // return new Tonality(characters.charAt(Math.floor(Math.random() * characters.length)),Math.floor(Math.random() * 3));
 }
 
 function randomTonality() {
@@ -286,9 +366,7 @@ function preload() {
 function setup() {
     createCanvas(windowWidth, windowHeight);
 
-
     button = createButton('Next Chord');
-    button.position(width/2 - 25, height/2 - 75);
     button.mousePressed(randomTonality);
 
     majChord = true;
@@ -317,15 +395,13 @@ function setup() {
     
     metronomeCheck = createCheckbox('Metronome on/off', metronomeActived);
     metronomeCheck.changed(activeMetronome);
-    metronomeCheck.position(width/2 - 40, height/2 + 120);
 
     plingCheck = createCheckbox('Pling at 1st beat', plingActived);
     plingCheck.changed(function () {plingActived = !plingActived});
-    plingCheck.position(width/2 - 40, height/2 + 140);
     
     fifthsCheck = createCheckbox('Fifths chords', fifthsActived);
     fifthsCheck.changed(function () {fifthsActived = !fifthsActived});
-    fifthsCheck.position(width/2 - 40, height/2 - 140);
+
     
     nextTonality = new Tonality(characters.charAt(Math.floor(Math.random() * characters.length)),Math.floor(Math.random() * 3));
     actualTonality = new Tonality(characters.charAt(Math.floor(Math.random() * characters.length)),Math.floor(Math.random() * 3));
@@ -335,30 +411,23 @@ function setup() {
 
     tempoSlider = createSlider(40, 208, 80);
     tempoSlider.class('slider');
-    tempoSlider.position(width/2 - 50, height/2 + 220);
 
     beatSlider = createSlider(1, 8, 4);
     beatSlider.class('slider');
-    beatSlider.position(width/2 - 50, height/2 + 290);
-
-    let checkX = width/2 + 250;
-
-    majCheck.position(checkX, height/2 - 100);
-    dominantCheck.position(checkX, height/2 - 50);
-    minorCheck.position(checkX, height/2);
-    semiDismCheck.position(checkX, height/2 + 50);
-    augCheck.position(checkX, height/2 + 100);
-    minorMaj7ChordCheck.position(checkX, height/2 + 150);
 }
   
 function draw() {
 
     background(255);
     textSize(20);
+
+    let centerX = width/2;
+    let centerY = height/2;
     
-    lastTonality.draw(width/2 - 150, height/2);
-    actualTonality.draw(width/2 - 50, height/2);
-    nextTonality.draw(width/2 + 150, height/2);
+    let tonalityCenter = centerX - 50;
+    lastTonality.draw(tonalityCenter - 150, centerY);
+    actualTonality.draw(tonalityCenter, centerY);
+    nextTonality.draw(tonalityCenter + 250, centerY);
     
     let timeNow = millis();
   
@@ -384,9 +453,29 @@ function draw() {
 
     }
 
-    text(`${tempoSlider.value()} bpm`, width/2 - 50, height/2 + 150);
-    text(`${beatSlider.value()} beats`, width/2 - 50, height/2 + 220);
+    text(`${tempoSlider.value()} bpm`, centerX - 50, centerY + 150);
+    text(`${beatSlider.value()} beats`, centerX - 50, centerY + 220);
     
     textSize(64);
-    text((beatCount+1), width/2 + 190, height/2 + 220);
+    text((beatCount+1), centerX + 190, centerY + 220);
+
+
+    
+    /////
+    button.position(centerX - 25, centerY - 75);
+    metronomeCheck.position(centerX - 40, centerY + 120);
+    plingCheck.position(centerX - 40, centerY + 140);
+    fifthsCheck.position(centerX - 40, centerY - 140);
+    tempoSlider.position(centerX - 50, centerY + 220);
+    beatSlider.position(centerX - 50, centerY + 290);
+
+    let checkX = width * 0.75;
+    checkX = centerX + 350;
+
+    majCheck.position(checkX, centerY - 100);
+    dominantCheck.position(checkX, centerY - 50);
+    minorCheck.position(checkX, centerY);
+    semiDismCheck.position(checkX, centerY + 50);
+    augCheck.position(checkX, centerY + 100);
+    minorMaj7ChordCheck.position(checkX, centerY + 150);
 }
