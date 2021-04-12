@@ -103,45 +103,68 @@
 
     </div>
 
-    
-    Metronome: <br>
     <div class="flex-container">
       <div style="flex-grow: 1">
-        <label class="container" id="metronome" onclick="checkMetronome()">
-          <i class="fas fa-play"></i>
-          <input id="_metronome" type="checkbox">
-          <span class="checkmark"></span>
-        </label>
-      </div>
-      <div style="flex-grow: 1">
-        <label class="container" id="pling" onclick="checkMetronome()">
-          <i class="fas fa-bell"></i>
-          1<sup>st</sup>
-          <input id="_pling" type="checkbox">
-          <span class="checkmark"></span>
-        </label>
-      </div>
-      <div style="flex-grow: 1">
-        <label class="container" id="metronomeSound" onclick="checkMetronome()">
-          <i class="fas fa-volume-up"></i>
-          <input id="_metronomeSound" type="checkbox">
-          <span class="checkmark"></span>
-        </label>
-      </div>
+        <p style="text-align: left; margin: auto;">Metronome: </p>
+        <div class="flex-container">
+          <div style="flex-grow: 1">
+            <label class="container" id="metronome" onclick="checkMetronome()">
+              <i class="fas fa-play"></i>
+              <input id="_metronome" type="checkbox">
+              <span class="checkmark"></span>
+            </label>
+          </div>
+          <div style="flex-grow: 1">
+            <label class="container" id="pling" onclick="checkMetronome()">
+              <i class="fas fa-bell"></i>
+              1<sup>st</sup>
+              <input id="_pling" type="checkbox">
+              <span class="checkmark"></span>
+            </label>
+          </div>
 
-      <div style="flex-grow: 5">
-        <div class="slidecontainer">
-          <input type="range" min="40" max="208" value="80" class="slider" id="myRange">
-          <p style="font-size:18px;"><span id="demo"></span> bpm</p>
+          <div style="flex-grow: 5">
+            <div class="slidecontainer">
+              <input type="range" min="40" max="208" value="80" class="slider" id="myRange">
+              <p style="font-size:18px; margin: auto;"><span id="demo"></span> bpm</p>
+            </div>
+          </div>
+          <div style="flex-grow: 5">
+            <div class="slidecontainer">
+              <input type="range" min="1" max="16" value="4" class="slider" id="beatsRange">
+              <p style="font-size:18px; margin: auto;"><span id="beatsSpan"></span> beats</p>
+            </div>
+          </div>
         </div>
       </div>
-      <div style="flex-grow: 5">
-        <div class="slidecontainer">
-          <input type="range" min="1" max="16" value="4" class="slider" id="beatsRange">
-          <p style="font-size:18px;"><span id="beatsSpan"></span> beats</p>
+      <div style="flex-grow: 1">
+        <p style="text-align: left; margin: auto;">Volume: </p>
+        <div class="flex-container">
+          <div style="flex-grow: 1">
+            <div class="slidecontainer">
+              <input type="range" min="0" max="100" value="30" class="sliderVol" id="vol_metronome_range">
+              <p style="font-size:18px; margin: auto;">
+                <i class="fas fa-play"></i>
+                &nbsp;
+                <span id="vol_metronome"></span> % 
+              </p>
+            </div>
+          </div>
+          <div style="flex-grow: 1">
+            <div class="slidecontainer">
+              <input type="range" min="0" max="100" value="100" class="sliderVol" id="vol_backtrack_range">
+              <p style="font-size:18px; margin: auto;">
+                <i class="fas fa-music"></i>
+                <i class="fas fa-guitar"></i>
+                <i class="fas fa-drum"></i>
+                &nbsp;
+                <span id="vol_backtrack"></span> % 
+              </p>
+            </div>
+          </div>
         </div>
-      </div>
 
+      </div>
     </div>
 
     Chords: <br>

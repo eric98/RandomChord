@@ -69,14 +69,15 @@ class Chord {
         audioNotes[this.semitone + this.semitoneTo7].audio.currentTime = 0;
     }
 
-    printChordNotes() {
-        if (backTrack.checked) {
+    updateVolume() {
 
-            console.log(audioNotes[this.semitone].name);
-            console.log(audioNotes[this.semitone + this.semitoneTo3].name);
-            console.log(audioNotes[this.semitone + this.semitoneTo5].name);
-            console.log(audioNotes[this.semitone + this.semitoneTo7].name);
-        }
+        let volume = backtrackVolumenSlider.value / 100;
+
+        audioNotes[this.semitone].audio.volume = volume;
+        audioNotes[this.semitone + this.semitoneTo3].audio.volume = volume;
+        audioNotes[this.semitone + this.semitoneTo5].audio.volume = volume;
+        audioNotes[this.semitone + this.semitoneTo7].audio.volume = volume;
+
     }
 
     play() {

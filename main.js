@@ -7,6 +7,20 @@ slider.oninput = function() {
   output.innerHTML = this.value;
 }
 
+var metronomeVolumenSlider = document.getElementById("vol_metronome_range");
+var metronomeVolumenText = document.getElementById("vol_metronome");
+metronomeVolumenText.innerHTML = metronomeVolumenSlider.value;
+metronomeVolumenSlider.oninput = function() {
+  metronomeVolumenText.innerHTML = this.value;
+}
+
+var backtrackVolumenSlider = document.getElementById("vol_backtrack_range");
+var backtrackVolumenText = document.getElementById("vol_backtrack");
+backtrackVolumenText.innerHTML = backtrackVolumenSlider.value;
+backtrackVolumenSlider.oninput = function() {
+  backtrackVolumenText.innerHTML = this.value;
+}
+
 var sliderBeats = document.getElementById("beatsRange");
 var outputBeats = document.getElementById("beatsSpan");
 outputBeats.innerHTML = sliderBeats.value;
@@ -89,9 +103,7 @@ chordStep();
 chordStep();
 
 var metronomeElt = document.getElementById("_metronome");
-var metronomeSoundElt = document.getElementById("_metronomeSound");
 var plingElt = document.getElementById("_pling");
-metronomeSoundElt.checked = true;
 
 function chordStep() {
 
@@ -106,7 +118,6 @@ function chordStep() {
   }
 
   if (loadedSounds) {
-    actualChord.printChordNotes();
     actualChord.play();
   }
 
@@ -123,6 +134,15 @@ function tick() {
 
     timeNow += deltaTime;
 
+    // VOLUME
+    if (loadedSounds) {
+      let metronomeVolume = metronomeVolumenSlider.value / 100;
+      pling.volume = metronomeVolume;
+      klack.volume = metronomeVolume * 0.67;
+      actualChord.updateVolume();
+    }
+
+    // METRONOME
     if (metronomeElt.checked && timeNow > nextKlack) {
 
       nextKlack = timeNow + 60000/slider.value;
@@ -135,19 +155,17 @@ function tick() {
       if (beatCount == 0) {
         chordStep();
 
-        if (metronomeSoundElt.checked) {
-          if (plingElt.checked) {
-            
-            pling.pause();
-            pling.currentTime = 0;
-            pling.play();
-          }
-          else  {
-            klack.play();
-          }
+        if (plingElt.checked) {
+          
+          pling.pause();
+          pling.currentTime = 0;
+          pling.play();
+        }
+        else  {
+          klack.play();
         }
       }
-      else if (metronomeSoundElt.checked) {
+      else {
         klack.play();
       }
 
