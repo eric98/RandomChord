@@ -71,7 +71,8 @@ var timeNow = 0;
 var nextKlack = 0;
 
 var myBeats = document.getElementById("myBeats");
-var beatCount = 0;
+var beatCount = -1;
+var firstChord = true;
 
 var fifthsProgression = document.getElementById("_fifthProgression");
 fifthsProgression.checked = true;
@@ -98,9 +99,9 @@ semiDismChord.checked = false;
 augChord.checked = false;
 minorMaj7Chord.checked = false;
 
-chordStep();
-chordStep();
-chordStep();
+for (let i = 0; i < 10; i++) {
+  chordStep();
+}
 
 var metronomeElt = document.getElementById("_metronome");
 var plingElt = document.getElementById("_pling");
@@ -152,7 +153,7 @@ function tick() {
 
       myBeats.textContent = beatCount + 1;
 
-      if (beatCount == 0) {
+      if (beatCount == 0 && !firstChord) {
         chordStep();
 
         if (plingElt.checked) {
@@ -167,6 +168,10 @@ function tick() {
       }
       else {
         klack.play();
+
+        if (firstChord) {
+          firstChord = false;
+        }
       }
 
   }
