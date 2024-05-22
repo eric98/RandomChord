@@ -217,3 +217,9 @@ a:active {
 #_fifthProgression {
   vertical-align: middle;
 }
+
+.permutation {
+  background-color: #2196F3;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}

@@ -84,7 +84,7 @@
         <br>
         <div class="custom-select">
           Pitch Tone: &nbsp;
-          <select id="pitch" onchange="draw()">
+          <select id="pitchTone" onchange="draw()">
             <option value="0">C</option>
             <option value="1">B</option>
             <option value="2">B♭</option>
@@ -180,7 +180,7 @@
           <span class="checkmark"></span>
         </label>
         <label class="container" id="min7" onclick="checkMin7()">-7 (minor 7)
-          <input id="_min7" type="checkbox">
+          <input id="_min7" type="checkbox">  
           <span class="checkmark"></span>
         </label>
         <label class="container" id="semiDism7" onclick="checkSemiDism()">ø (semidism)
@@ -196,6 +196,30 @@
           <span class="checkmark"></span>
         </label>
       </div>
+      <div style="flex-grow: 3">
+        <div>
+          <h1 id="note" style="height: 30px;">--</h1>
+          <p id="noteFrequency">-- Hz</p>
+        </div>
+        <div class="flex-container permutation">
+          <div>
+            <p id="note1">C<sup>♭</sup></p>
+            <p id="permutation1">1<sup>♭</sup></p>
+          </div>
+          <div>
+            <p id="note3">E<sup>♭</sup></p>
+            <p id="permutation3">3<sup>♭</sup></p>
+          </div>
+          <div>
+            <p id="note5">G<sup>♭</sup></p>
+            <p id="permutation5">5<sup>♭</sup></p>
+          </div>
+          <div>
+            <p id="note7">B<sup>♭</sup></p>
+            <p id="permutation7">7<sup>♭</sup></p>
+          </div>
+        </div>
+      </div>
       
     </div>
 
@@ -209,6 +233,7 @@
     <!-- <script src="./model/Tonality.js"></script> -->
     <script src="./model/Chord.js"></script>
     <script src="./main.js"></script>
+    <script src="./tuner.js"></script>
     <!-- <script src="sketch2.js"></script> -->
   </body>
 </html>

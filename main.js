@@ -37,8 +37,8 @@ var nextImage = document.getElementById("nextImage");
 var backTrack = document.getElementById("_backTrack");
 backTrack.checked = true;
 
-var pitch = document.getElementById("pitch");
-pitch.value = "2";
+var pitchTone = document.getElementById("pitchTone");
+pitchTone.value = "2";
 
 var imageCheck = document.getElementById("_images");
 imageCheck.checked = true;
@@ -81,9 +81,23 @@ var lastElt = document.getElementById("_lastChord");
 var actualElt = document.getElementById("_actualChord");
 var nextElt = document.getElementById("_nextChord");
 
-var lastChord = new Chord(lastElt, lastImage);
-var actualChord = new Chord(actualElt, actualImage);
-var nextChord = new Chord(nextElt, nextImage);
+var permNumbersElt = [
+  document.getElementById("permutation1"),
+  document.getElementById("permutation3"),
+  document.getElementById("permutation5"),
+  document.getElementById("permutation7")
+];
+
+var permNotesElt = [
+  document.getElementById("note1"),
+  document.getElementById("note3"),
+  document.getElementById("note5"),
+  document.getElementById("note7")
+];
+
+var lastChord = new Chord(lastElt, lastImage, permNumbersElt, permNotesElt);
+var currentChord = new Chord(actualElt, actualImage, permNumbersElt, permNotesElt);
+var nextChord = new Chord(nextElt, nextImage, permNumbersElt, permNotesElt);
 
 var majChord = document.getElementById("_maj7");
 var dominantChord = document.getElementById("_dom");
@@ -108,8 +122,8 @@ var plingElt = document.getElementById("_pling");
 
 function chordStep() {
 
-  lastChord.setChord(actualChord);
-  actualChord.setChord(nextChord);
+  lastChord.setChord(currentChord);
+  currentChord.setChord(nextChord);
   
   if (fifthsProgression.checked) {
     nextChord.setNextFifthChord();
@@ -119,7 +133,7 @@ function chordStep() {
   }
 
   if (loadedSounds) {
-    actualChord.play();
+    currentChord.play();
   }
 
   draw();
@@ -127,7 +141,8 @@ function chordStep() {
 
 function draw() {
   lastChord.draw();
-  actualChord.draw();
+  currentChord.draw();
+  currentChord.drawPermutations();
   nextChord.draw();
 }
 
@@ -140,7 +155,7 @@ function tick() {
       let metronomeVolume = metronomeVolumenSlider.value / 100;
       pling.volume = metronomeVolume;
       klack.volume = metronomeVolume * 0.67;
-      actualChord.updateVolume();
+      currentChord.updateVolume();
     }
 
     // METRONOME
@@ -330,7 +345,7 @@ function loadSounds() {
 
   loadNoteAudios();
 
-  actualChord.play();
+  currentChord.play();
 
 }
 
