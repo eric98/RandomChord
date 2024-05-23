@@ -57,6 +57,12 @@ function noteFromPitch( frequency ) {
 var noteElement = document.getElementById("note");
 var noteFrequencyElement = document.getElementById("noteFrequency");
 
+const MILLISECONDS_PLAYING_NOTE_TO_CHECK_INPUT = 100;
+var lastNotePlayingInt = {
+	note: -1,
+	startedPlayingTime: -1
+}
+
 navigator.mediaDevices.getUserMedia({ audio: true, video: false })
 .then(function(stream) {
     var audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -70,21 +76,49 @@ navigator.mediaDevices.getUserMedia({ audio: true, video: false })
     var bufferLength = analyser.frequencyBinCount;
     var buf = new Float32Array( bufferLength );
 
-    function update() {
+    function tunerUpdate() {
       analyser.getFloatTimeDomainData( buf );
       var ac = autoCorrelate( buf, audioContext.sampleRate );
 
       let noteText;
       let noteFrequencyText;
     
+	  // 1. CHECK NOTE from microphone
       if (ac > -1) {
         var note =  noteFromPitch( ac );
+		var transposedNote = note + parseInt(pitchTone.value);
 
-        noteText = NOTE_STRINGS[(note + parseInt(pitchTone.value))%12];
+        noteText = NOTE_STRINGS[transposedNote % 12];
         noteFrequencyText = Math.round( ac ) + ' Hz';
+
+		// 2. CHECK playing time
+		currentPlayingNoteInt = note % 12;
+
+		if (currentPlayingNoteInt != lastNotePlayingInt.note) {
+			// set new playing time
+			lastNotePlayingInt.note = note % 12;
+			lastNotePlayingInt.startedPlayingTime = timeNow;
+		}
+		else {
+			// calculate playing time
+			if (timeNow - lastNotePlayingInt.startedPlayingTime > MILLISECONDS_PLAYING_NOTE_TO_CHECK_INPUT) {
+				
+				// 3. CHECK if it's a note of the currentChord
+
+				// translate from C -> semitone 0
+				// to A -> semitone 0
+				let translatedNote = transposedNote + 3;
+
+				currentChord.checkInputNoteExists(translatedNote);
+			}
+		}
       } else {
-        noteText = "--";
-        noteFrequencyText = '-- Hz';
+
+		noteText = "--";
+		noteFrequencyText = '-- Hz';
+
+		// 2. RESET playing time
+		lastNotePlayingInt.note = -1;
       }
 
       noteElement.innerHTML = noteText;
@@ -93,10 +127,10 @@ navigator.mediaDevices.getUserMedia({ audio: true, video: false })
       if (!window.requestAnimationFrame)
         window.requestAnimationFrame = window.webkitRequestAnimationFrame;
 
-      rafID = window.requestAnimationFrame( update );
+      rafID = window.requestAnimationFrame( tunerUpdate );
     }
 
-    update();
+    tunerUpdate();
 })
 .catch(function(err) {
     console.log('An error occurred: ' + err);

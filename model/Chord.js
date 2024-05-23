@@ -16,6 +16,31 @@ class Chord {
 
         this.chordNotes = [];
         this.numberNotes = [];
+
+        this.note1 = {
+            name: "",
+            intAlteration: -1,
+            stringAlteration: "",
+            auxAlterationCode: ""
+        }
+        this.note3 = {
+            name: "",
+            intAlteration: -1,
+            stringAlteration: "",
+            auxAlterationCode: ""
+        }
+        this.note5 = {
+            name: "",
+            intAlteration: -1,
+            stringAlteration: "",
+            auxAlterationCode: ""
+        }
+        this.note7 = {
+            name: "",
+            intAlteration: -1,
+            stringAlteration: "",
+            auxAlterationCode: ""
+        }
     }
 
     setMaj7() {
@@ -365,7 +390,10 @@ class Chord {
         this.setRandomMode();
     }
 
-    semitoneIntToString(desiredSemitone) {
+    // Gets int from -9 to 2
+    // Returns the note object example {name: 'B', intAlteration: -1, stringAlteration: '♭', auxAlterationCode: 'b'}
+    // values calculated like adding semitones to A note; from -9 [C] to 2 [B]
+    semitoneIntToNote(desiredSemitone) {
 
         let desiredName;
         let desiredAlteration;
@@ -436,7 +464,11 @@ class Chord {
             name: desiredName,
             intAlteration: desiredAlteration,
             stringAlteration: desiredAuxAlteration,
-            auxAlterationCode: auxAlterationCodeImg
+            auxAlterationCode: auxAlterationCodeImg,
+            equals(other) {
+                return this.name == other.name &&
+                 this.intAlteration == other.intAlteration;
+            }
         }
     }
 
@@ -453,22 +485,42 @@ class Chord {
         return desiredSemitone;
     }
 
-    draw() {
+    checkInputNoteExists(currentSemitoneCount) {
+        let inputNote = this.semitoneIntToNote(this.formatSemitoneCount(currentSemitoneCount));
         
+        if (inputNote.equals(this.note1)) {
+            highlightPermutationDiv(1);
+        }
+
+        if (inputNote.equals(this.note3)) {
+            highlightPermutationDiv(3);
+        }
+
+        if (inputNote.equals(this.note5)) {
+            highlightPermutationDiv(5);
+        }
+
+        if (inputNote.equals(this.note7)) {
+            highlightPermutationDiv(7);
+        }
+    }
+
+    update() {
         let desiredSemitone = this.formatSemitoneCount(this.semitone + parseInt(pitchTone.value));
 
-        let note1 = this.semitoneIntToString(this.formatSemitoneCount(desiredSemitone));
-        let note3 = this.semitoneIntToString(this.formatSemitoneCount(desiredSemitone + this.semitoneTo3));
-        let note5 = this.semitoneIntToString(this.formatSemitoneCount(desiredSemitone + this.semitoneTo5));
-        let note7 = this.semitoneIntToString(this.formatSemitoneCount(desiredSemitone + this.semitoneTo7));
+        this.note1 = this.semitoneIntToNote(this.formatSemitoneCount(desiredSemitone));
+        this.note3 = this.semitoneIntToNote(this.formatSemitoneCount(desiredSemitone + this.semitoneTo3));
+        this.note5 = this.semitoneIntToNote(this.formatSemitoneCount(desiredSemitone + this.semitoneTo5));
+        this.note7 = this.semitoneIntToNote(this.formatSemitoneCount(desiredSemitone + this.semitoneTo7));
+    }
 
-        this.elt.innerHTML = note1.name+"<sup>"+note1.stringAlteration+"</sup><sub>"+this.mode+"</sub>";
+    draw() {
+        this.elt.innerHTML = this.note1.name+"<sup>"+this.note1.stringAlteration+"</sup><sub>"+this.mode+"</sub>";
 
-        // TODO
-        this.chordNotes[0] = note1.name+"<sup>"+note1.stringAlteration+"</sup>";
-        this.chordNotes[1] = note3.name+"<sup>"+note3.stringAlteration+"</sup>";
-        this.chordNotes[2] = note5.name+"<sup>"+note5.stringAlteration+"</sup>";
-        this.chordNotes[3] = note7.name+"<sup>"+note7.stringAlteration+"</sup>";
+        this.chordNotes[0] = this.note1.name+"<sup>"+this.note1.stringAlteration+"</sup>";
+        this.chordNotes[1] = this.note3.name+"<sup>"+this.note3.stringAlteration+"</sup>";
+        this.chordNotes[2] = this.note5.name+"<sup>"+this.note5.stringAlteration+"</sup>";
+        this.chordNotes[3] = this.note7.name+"<sup>"+this.note7.stringAlteration+"</sup>";
 
         let auxChord = "";
         if (this.mode == "Δ") {
@@ -493,24 +545,24 @@ class Chord {
         let prevName;
         let nextName;
 
-        if (note1.name == "E" && note1.intAlteration == -1) {
+        if (this.note1.name == "E" && this.note1.intAlteration == -1) {
             prevName = "D";
             nextName = "DisE";
         }
-        else if (note1.name == "A" && note1.intAlteration == -1) {
+        else if (this.note1.name == "A" && this.note1.intAlteration == -1) {
             prevName = "G";
             nextName = "GisA";
         }
-        else if (note1.name == "B" && note1.intAlteration == -1) {
+        else if (this.note1.name == "B" && this.note1.intAlteration == -1) {
             prevName = "A";
             nextName = "AisB";
         }
         else {
-            prevName = note1.name;
-            nextName = note1.name;
+            prevName = this.note1.name;
+            nextName = this.note1.name;
         }
 
-        let imgChordName = prevName + "/" + nextName + note1.auxAlterationCode + auxChord + ".gif";
+        let imgChordName = prevName + "/" + nextName + this.note1.auxAlterationCode + auxChord + ".gif";
         this.imgElt.src = "https://www.musiklehre.at/all_piano_chords/img/"+imgChordName;
     }
     

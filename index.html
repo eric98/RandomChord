@@ -42,8 +42,8 @@
 
       <div style="flex-grow: 1; display: grid;"">
         <br>
-        <label class="container" id="images" onclick="enableImages()">Images
-          <input id="_images" type="checkbox">
+        <label class="container" id="help" onclick="enableHelp()">Help
+          <input id="_help" type="checkbox">
           <span class="checkmark"></span>
         </label>
         
@@ -60,7 +60,7 @@
             <img id="lastImage" src="https://www.musiklehre.at/all_piano_chords/img/F/Fismaj7.gif">
           </div>
           <div class="chord" style="flex-grow: 4">
-            <img id="actualImage" src="https://www.musiklehre.at/all_piano_chords/img/F/Fismaj7.gif">
+            <img id="currentImage" src="https://www.musiklehre.at/all_piano_chords/img/F/Fismaj7.gif">
           </div>
           <div class="chord" style="flex-grow: 4">
             <img id="nextImage" src="https://www.musiklehre.at/all_piano_chords/img/F/Fismaj7.gif">
@@ -71,8 +71,8 @@
           <div id="lastChord" class="chord" style="flex-grow: 4">
             <p id="_lastChord" class="chordName">A<sup>♭</sup><sub>7♯5</sub></p>
           </div>
-          <div id="actualChord" class="chord" style="flex-grow: 4">
-            <p id="_actualChord" class="chordName">C<sup>♭</sup><sub>-Δ</sub></p>
+          <div id="currentChord" class="chord" style="flex-grow: 4">
+            <p id="_currentChord" class="chordName">C<sup>♭</sup><sub>-Δ</sub></p>
           </div>
           <div id="nextChord" class="chord" style="flex-grow: 4">
             <p id="_nextChord" class="chordName">F<sup>♭</sup><sub>7♯5</sub></p>
@@ -201,20 +201,20 @@
           <h1 id="note" style="height: 30px;">--</h1>
           <p id="noteFrequency">-- Hz</p>
         </div>
-        <div class="flex-container permutation">
-          <div>
+        <div class="permutation">
+          <div id="permutationDiv1">
             <p id="note1">C<sup>♭</sup></p>
             <p id="permutation1">1<sup>♭</sup></p>
           </div>
-          <div>
+          <div id="permutationDiv3">
             <p id="note3">E<sup>♭</sup></p>
             <p id="permutation3">3<sup>♭</sup></p>
           </div>
-          <div>
+          <div id="permutationDiv5">
             <p id="note5">G<sup>♭</sup></p>
             <p id="permutation5">5<sup>♭</sup></p>
           </div>
-          <div>
+          <div id="permutationDiv7">
             <p id="note7">B<sup>♭</sup></p>
             <p id="permutation7">7<sup>♭</sup></p>
           </div>
@@ -224,16 +224,14 @@
     </div>
 
     <footer>
-      <p style="font-size:20px;">Made with 🎺❤ by <a href="https://www.instagram.com/ergare17/" target="_blank">Eric Garcia</a></p>
+      <p style="font-size:20px;">Made with 🎺❤ by <a href="https://www.linkedin.com/in/ericgarciareverter/" target="_blank">Eric Garcia</a></p>
       <!-- <p style="font-size:16px;">@ergare17</p> -->
       <br>
       <p style="font-size:18px;">Resources from <a href="https://www.musiklehre.at/all_piano_chords/" target="_blank">Musiklehre</a> and <a href="https://freesound.org/" target="_blank">Freesound</a></p>
     </footer>
     
-    <!-- <script src="./model/Tonality.js"></script> -->
     <script src="./model/Chord.js"></script>
     <script src="./main.js"></script>
     <script src="./tuner.js"></script>
-    <!-- <script src="sketch2.js"></script> -->
   </body>
 </html>

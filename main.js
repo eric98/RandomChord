@@ -1,7 +1,9 @@
-
 var slider = document.getElementById("myRange");
 var output = document.getElementById("demo");
 output.innerHTML = slider.value;
+
+const CORRECT_NOTES_COLOR = "#4CAF50";
+const NOTES_COLOR = "#86c8ff";
 
 slider.oninput = function() {
   output.innerHTML = this.value;
@@ -31,7 +33,7 @@ sliderBeats.oninput = function() {
 
 var imagesDiv = document.getElementById("imagesDiv");
 var lastImage = document.getElementById("lastImage");
-var actualImage = document.getElementById("actualImage");
+var currentImage = document.getElementById("currentImage");
 var nextImage = document.getElementById("nextImage");
 
 var backTrack = document.getElementById("_backTrack");
@@ -40,32 +42,13 @@ backTrack.checked = true;
 var pitchTone = document.getElementById("pitchTone");
 pitchTone.value = "2";
 
-var imageCheck = document.getElementById("_images");
-imageCheck.checked = true;
+var helpCheck = document.getElementById("_help");
+helpCheck.checked = true;
 
-function enableImages() {
-  let visibility;
-  let display;
-
-  if (imageCheck.checked) {
-    visibility = 'visible';
-    display = "";
-  }
-  else {
-    visibility = 'hidden';
-    display = "none";
-  }
-
-  lastImage.style.visibility = visibility;
-  actualImage.style.visibility = visibility;
-  nextImage.style.visibility = visibility;
-
-  imagesDiv.style.display = display;
-}
-
-const deltaTime = 16.67;
+const DELTA_TIME = 16.67;
+const MILLISECONDS_PER_MINUTE = 60000;
 var lastUpdate = Date.now();
-var myInterval = setInterval(tick, deltaTime);
+var myInterval = setInterval(tick, DELTA_TIME);
 
 var timeNow = 0;
 var nextKlack = 0;
@@ -78,8 +61,15 @@ var fifthsProgression = document.getElementById("_fifthProgression");
 fifthsProgression.checked = true;
 
 var lastElt = document.getElementById("_lastChord");
-var actualElt = document.getElementById("_actualChord");
+var currentElt = document.getElementById("_currentChord");
 var nextElt = document.getElementById("_nextChord");
+
+var permDivsElt = [
+  document.getElementById("permutationDiv1"),
+  document.getElementById("permutationDiv3"),
+  document.getElementById("permutationDiv5"),
+  document.getElementById("permutationDiv7")
+]
 
 var permNumbersElt = [
   document.getElementById("permutation1"),
@@ -96,7 +86,7 @@ var permNotesElt = [
 ];
 
 var lastChord = new Chord(lastElt, lastImage, permNumbersElt, permNotesElt);
-var currentChord = new Chord(actualElt, actualImage, permNumbersElt, permNotesElt);
+var currentChord = new Chord(currentElt, currentImage, permNumbersElt, permNotesElt);
 var nextChord = new Chord(nextElt, nextImage, permNumbersElt, permNotesElt);
 
 var majChord = document.getElementById("_maj7");
@@ -136,7 +126,16 @@ function chordStep() {
     currentChord.play();
   }
 
+  update();
   draw();
+
+  resetPermutationDivs();
+}
+
+function update() {
+  lastChord.update();
+  currentChord.update();
+  nextChord.update();
 }
 
 function draw() {
@@ -148,7 +147,7 @@ function draw() {
 
 function tick() {
 
-    timeNow += deltaTime;
+    timeNow += DELTA_TIME;
 
     // VOLUME
     if (loadedSounds) {
@@ -161,7 +160,7 @@ function tick() {
     // METRONOME
     if (metronomeElt.checked && timeNow > nextKlack) {
 
-      nextKlack = timeNow + 60000/slider.value;
+      nextKlack = timeNow + MILLISECONDS_PER_MINUTE/slider.value;
 
       beatCount++;
       beatCount = beatCount % sliderBeats.value;
@@ -291,8 +290,8 @@ var klack;
 var pling;
 var loadedSounds = false;
 
-const rootUrl = "https://www.musiklehre.at/all_piano_chords/";
-const notesSound = {
+const ROOT_URL = "https://www.musiklehre.at/all_piano_chords/";
+const NOTES_SOUND = {
   "1C": { url: "media/523-C.mp3", semitone: -9},
   "1Cs": { url: "media/545-C-sharp.mp3", semitone: -8},
   "1D": { url: "media/587-D.mp3", semitone: -7},
@@ -323,8 +322,8 @@ var audioNotes = {};
 
 function loadNoteAudios() {
 
-  Object.entries(notesSound).forEach(([key, value]) => {
-    audioNotes[value.semitone] = {name: key, audio: new Audio(rootUrl+value.url)};
+  Object.entries(NOTES_SOUND).forEach(([key, value]) => {
+    audioNotes[value.semitone] = {name: key, audio: new Audio(ROOT_URL+value.url)};
   });
 
   // https://www.musiklehre.at/all_piano_chords/
@@ -357,4 +356,77 @@ function checkMetronome() {
     loadedSounds = true;
   }
 
+}
+
+function enableImages(inputChecked) {
+  let visibility;
+  let display;
+
+  if (inputChecked) {
+    visibility = 'visible';
+    display = "";
+  }
+  else {
+    visibility = 'hidden';
+    display = "none";
+  }
+
+  lastImage.style.visibility = visibility;
+  currentImage.style.visibility = visibility;
+  nextImage.style.visibility = visibility;
+
+  imagesDiv.style.display = display;
+}
+
+function enablePermutationNotes(inputChecked) {
+  let display;
+
+  if (inputChecked) {
+    display = "";
+  }
+  else {
+    display = "none";
+  }
+
+  permNotesElt[0].style.display = display;
+  permNotesElt[1].style.display = display;
+  permNotesElt[2].style.display = display;
+  permNotesElt[3].style.display = display;
+}
+
+function enableHelp() {
+  enableImages(helpCheck.checked);
+  enablePermutationNotes(helpCheck.checked);
+}
+
+
+
+function resetPermutationDivs() {
+  permDivsElt.forEach(
+    (element) => element.style.background = NOTES_COLOR
+    );
+}
+
+function highlightPermutationDiv(note) {
+  
+  let highlightPermutationDiv;
+  switch (note) {
+    case 1:
+      highlightPermutationDiv = permDivsElt[0];
+      break;
+    case 3:
+      highlightPermutationDiv = permDivsElt[1];
+      break;
+    case 5:
+      highlightPermutationDiv = permDivsElt[2];
+      break;
+    case 7:
+      highlightPermutationDiv = permDivsElt[3];
+      break;
+
+    default:
+      return;
+  }
+
+  highlightPermutationDiv.style.background = CORRECT_NOTES_COLOR;
 }

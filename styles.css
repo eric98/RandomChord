@@ -219,7 +219,11 @@ a:active {
 }
 
 .permutation {
-  background-color: #2196F3;
-  flex-wrap: wrap;
+  display: flex;
+  background-color: #86c8ff;
   justify-content: space-around;
+}
+
+.permutation div {
+  width: 25%;
 }
