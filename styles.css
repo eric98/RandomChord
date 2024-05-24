@@ -227,3 +227,12 @@ a:active {
 .permutation div {
   width: 25%;
 }
+
+#header-options div {
+  align-content: center;
+}
+
+#header-options div:nth-child(3) {
+  /* background-color: #86c8ff; */
+  align-content: center;
+}

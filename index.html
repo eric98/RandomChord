@@ -14,14 +14,13 @@
   </style>
   <body>
     
-    <div class="flex-container">
+    <div id="header-options" class="flex-container">
 
       <div style="flex-grow: 1">
         <h1>Random Chord</h1>
       </div>
 
-      <div style="flex-grow: 1; display: grid;"">
-        <br>
+      <div style="flex-grow: 1">
         <label class="container" id="backTrack">
           <i class="fas fa-music"></i>
           <i class="fas fa-guitar"></i>
@@ -32,16 +31,22 @@
         
       </div>
 
-      <div style="flex-grow: 1; display: grid;">
-        <br>
-        <label class="container" id="fifthProgression">5<sup>th</sup> progression
+      <div style="flex-grow: 1">
+        <!-- <label class="container" id="fifthProgression">5<sup>th</sup> progression
           <input id="_fifthProgression" type="checkbox">
           <span class="checkmark"></span>
-        </label>
+        </label> -->
+
+        <label for="methodology-select">Methodology:</label>
+        <select title="nextChordMethodology" id="nextChordMethodology">
+          <option value="spacedRepetition">Spaced Repetition</option>
+          <option value="fifthProgression">5<sup>th</sup> progression</option>
+          <option value="random">Random</option>
+        </select>
+        
       </div>
 
-      <div style="flex-grow: 1; display: grid;"">
-        <br>
+      <div style="flex-grow: 1">
         <label class="container" id="help" onclick="enableHelp()">Help
           <input id="_help" type="checkbox">
           <span class="checkmark"></span>
@@ -230,9 +235,9 @@
       <p style="font-size:18px;">Resources from <a href="https://www.musiklehre.at/all_piano_chords/" target="_blank">Musiklehre</a> and <a href="https://freesound.org/" target="_blank">Freesound</a></p>
     </footer>
     
+    <script src="./spacedRepetition.js"></script>
     <script src="./model/Chord.js"></script>
     <script src="./main.js"></script>
     <script src="./tuner.js"></script>
-    <script src="./spacedRepetition.js"></script>
   </body>
 </html>

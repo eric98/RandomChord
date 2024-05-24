@@ -2,6 +2,7 @@ class Flashcard {
     constructor(question, answer) {
         this.question = question;
         this.answer = answer;
+
         this.box = 1;
         this.updateBox = false;
     }
@@ -14,66 +15,124 @@ class Flashcard {
 }
 
 class LeitnerSystem {
-    constructor() {
+    init() {
         this.boxes = [[], [], [], [], []];
+        
+        this.currentCard = {};
+        this.currentCardIndex = -1;
+        this.currentBoxIndex = -1;
+    }
+
+    constructor() {
+        this.init();
+    }
+
+    clearDeck() {
+        this.init();
     }
 
     addCard(card) {
         this.boxes[0].push(card);
     }
 
-    studyBox(boxArrayIndex) {
-        let box = this.boxes[boxArrayIndex];
-        for (let i = 0; i < box.length; i++) {
-            let card = box[i];
+    seeNextCard() {
 
-            if (card.getAnswer()) {
+        let nextCard = {};
 
-                if (card.box < this.boxes.length - 1) {
-                    card.updateBox = true;
-                    card.box++;
-                }
-                else {
-                    card.updateBox = false;
-                }
+        let nextCurrentCardIndex = this.currentCardIndex + 1;
 
-            } else {
+        if (nextCurrentCardIndex < this.boxes[this.currentBoxIndex].length) {
+
+            nextCard = this.boxes[this.currentBoxIndex][nextCurrentCardIndex];
+        }
+        else {
+
+            for (let index = 0; index < this.boxes.length; index++) {
+                let box = this.boxes[index];
                 
-                if (card.box != 1) {
-                    card.updateBox = true;
-                    card.box = 1;
+                if (box.length > 0) {
+                    // get minimun value 
+                    let auxCard = box.find(card => card.box === 1 && card.updateBox);
+
+                    if (auxCard === undefined) {
+                        auxCard = box[0];
+                    }
+
+                    nextCard = this.boxes[this.currentBoxIndex][this.currentCardIndex];
+                    break;
                 }
-                else {
-                    card.updateBox = false;
-                }
-                
             }
         }
 
+        return nextCard;
+    }
+
+    nextCard() {
+
+        let nextCurrentCardIndex = this.currentCardIndex + 1;
+
+        if (nextCurrentCardIndex < this.boxes[this.currentBoxIndex].length) {
+
+            this.currentCardIndex = nextCurrentCardIndex;
+            this.currentCard = this.boxes[this.currentBoxIndex][this.currentCardIndex];
+    
+            this.currentCardStep();
+        }
+        else {
+
+            this.updateMovingCards();
+            this.closeDeck();
+        }
+
+        return this.currentCard;
+    }
+
+    currentCardStep() {
+        if (this.currentCard.correctAnswer) {
+
+            if (this.currentCard.box < this.boxes.length - 1) {
+                this.currentCard.updateBox = true;
+                this.currentCard.box++;
+            }
+            else {
+                this.currentCard.updateBox = false;
+            }
+
+        } else {
+            
+            if (this.currentCard.box != 1) {
+                this.currentCard.updateBox = true;
+                this.currentCard.box = 1;
+            }
+            else {
+                this.currentCard.updateBox = false;
+            }
+            
+        }
+    }
+
+    updateMovingCards() {
+        let box = this.boxes[this.currentBoxIndex];
+
+        // 1. Get movingCards
         let correctCards = box.filter(card => card.box !== 1 && card.updateBox);
         let incorrectCards = box.filter(card => card.box === 1 && card.updateBox);
         
+        // 2. Copy movingCards to its proper box
         this.boxes[0].push(...incorrectCards);
-        if (boxArrayIndex + 1 < this.boxes.length) {
-            this.boxes[boxArrayIndex+1].push(...correctCards);
+        const nextBoxArrayIndex = this.currentBoxIndex + 1;
+        if (nextBoxArrayIndex < this.boxes.length) {
+            this.boxes[nextBoxArrayIndex].push(...correctCards);
         }
 
-        this.boxes[boxArrayIndex] = box.filter(card => card.box === boxArrayIndex + 1);
+        // 3. Erase movingCards from the currentBox
+        this.boxes[this.currentBoxIndex] = box.filter(card => card.box === nextBoxArrayIndex);
     }
 
-    study() {
-        const MAX_TRIES = 3;
-        for (let i = 0; i < MAX_TRIES; i++) {
-            let firstNotEmptyBoxIndex = this.boxes.findIndex(box => box.length > 0);
-            this.studyBox(firstNotEmptyBoxIndex);
-        }
+    closeDeck() {
+        this.currentBoxIndex = this.boxes.findIndex(box => box.length > 0);
+
+        this.currentCardIndex = 0;
+        this.currentCard = this.boxes[this.currentBoxIndex][0];
     }
 }
-
-// Usage
-let system = new LeitnerSystem();
-system.addCard(new Flashcard("What is the capital of Spain?", "Madrid"));
-system.addCard(new Flashcard("What is the capital of France?", "Paris"));
-system.addCard(new Flashcard("What is the capital of Catalunya?", "Barcelona"));
-system.addCard(new Flashcard("What is the capital of Turkey?", "Ankara"));
-system.study();

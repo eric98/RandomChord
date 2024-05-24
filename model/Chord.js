@@ -41,6 +41,16 @@ class Chord {
             stringAlteration: "",
             auxAlterationCode: ""
         }
+
+        this.box = 1;
+        this.updateBox = false;
+
+        this.playedNotesCount = 0; 
+        this.maxPlayedNotesCount = 4; 
+    }
+
+    getAnswer() {
+        return this.playedNotesCount === this.maxPlayedNotesCount;
     }
 
     setMaj7() {
@@ -315,6 +325,39 @@ class Chord {
         this.semitoneTo7 = _chord.semitoneTo7;
     }
 
+    setNextChordByInfo(_chordInfo) {
+        if (loadedSounds) {
+            this.clearAudio();
+        }
+
+        let note = this.semitoneIntToNote(_chordInfo.semitone);
+
+        this.name = note.name;
+        this.alteration = note.intAlteration;
+        this.semitone = _chordInfo.semitone;
+
+        switch(_chordInfo.mode) {
+            case 'Δ':
+                this.setMaj7();
+                break;
+            case '7':
+                this.setDominant();
+                break;
+            case '-7':
+                this.setMinor();
+                break;
+            case 'ø':
+                this.setSemiDism();
+                break;
+            case '7♯5':
+                this.setAug();
+                break;
+            case '-Δ':
+                this.setMinorMaj7();
+                break;
+        }
+    }
+
     setRandomChord() {
         this.setRandomNote();
         this.setRandomMode();
@@ -472,7 +515,7 @@ class Chord {
         }
     }
 
-    formatSemitoneCount(currentSemitoneCount) {
+    static formatSemitoneCount(currentSemitoneCount) {
         let desiredSemitone = currentSemitoneCount;
         desiredSemitone += 12;
         desiredSemitone %= 12;
@@ -486,7 +529,7 @@ class Chord {
     }
 
     checkInputNoteExists(currentSemitoneCount) {
-        let inputNote = this.semitoneIntToNote(this.formatSemitoneCount(currentSemitoneCount));
+        let inputNote = this.semitoneIntToNote(Chord.formatSemitoneCount(currentSemitoneCount));
         
         if (inputNote.equals(this.note1)) {
             highlightPermutationDiv(1);
@@ -506,12 +549,12 @@ class Chord {
     }
 
     update() {
-        let desiredSemitone = this.formatSemitoneCount(this.semitone + parseInt(pitchTone.value));
+        let desiredSemitone = Chord.formatSemitoneCount(this.semitone + parseInt(pitchTone.value));
 
-        this.note1 = this.semitoneIntToNote(this.formatSemitoneCount(desiredSemitone));
-        this.note3 = this.semitoneIntToNote(this.formatSemitoneCount(desiredSemitone + this.semitoneTo3));
-        this.note5 = this.semitoneIntToNote(this.formatSemitoneCount(desiredSemitone + this.semitoneTo5));
-        this.note7 = this.semitoneIntToNote(this.formatSemitoneCount(desiredSemitone + this.semitoneTo7));
+        this.note1 = this.semitoneIntToNote(Chord.formatSemitoneCount(desiredSemitone));
+        this.note3 = this.semitoneIntToNote(Chord.formatSemitoneCount(desiredSemitone + this.semitoneTo3));
+        this.note5 = this.semitoneIntToNote(Chord.formatSemitoneCount(desiredSemitone + this.semitoneTo5));
+        this.note7 = this.semitoneIntToNote(Chord.formatSemitoneCount(desiredSemitone + this.semitoneTo7));
     }
 
     draw() {

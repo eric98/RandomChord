@@ -57,8 +57,8 @@ var myBeats = document.getElementById("myBeats");
 var beatCount = -1;
 var firstChord = true;
 
-var fifthsProgression = document.getElementById("_fifthProgression");
-fifthsProgression.checked = true;
+var nextChordMethodology = document.getElementById("nextChordMethodology");
+
 
 var lastElt = document.getElementById("_lastChord");
 var currentElt = document.getElementById("_currentChord");
@@ -103,25 +103,107 @@ semiDismChord.checked = false;
 augChord.checked = false;
 minorMaj7Chord.checked = false;
 
-for (let i = 0; i < 10; i++) {
-  chordStep();
-}
-
 var metronomeElt = document.getElementById("_metronome");
 var plingElt = document.getElementById("_pling");
+
+function getAvailableChords() {
+
+  let availableChords = [];
+
+  for (let index = 0; index < 12; index++) {
+
+    let formatSemitoneCount = Chord.formatSemitoneCount(index);
+
+    if (majChord.checked) {
+      availableChords.push({
+        semitone: formatSemitoneCount,
+        mode: "Δ",
+        box: 1,
+        updateBox: false,
+        correctAnswer: false
+      });
+    }
+    if (dominantChord.checked) {
+      availableChords.push({
+        semitone: formatSemitoneCount,
+        mode: "7",
+        box: 1,
+        updateBox: false,
+        correctAnswer: false
+      });
+    }
+    if (minorChord.checked) {
+      availableChords.push({
+        semitone: formatSemitoneCount,
+        mode: "-7",
+        box: 1,
+        updateBox: false,
+        correctAnswer: false
+      });
+    }
+    if (semiDismChord.checked) {
+      availableChords.push({
+        semitone: formatSemitoneCount,
+        mode: "ø",
+        box: 1,
+        updateBox: false,
+        correctAnswer: false
+      });
+    }
+    if (augChord.checked) {
+      availableChords.push({
+        semitone: formatSemitoneCount,
+        mode: "7♯5",
+        box: 1,
+        updateBox: false,
+        correctAnswer: false
+      });
+    }
+    if (minorMaj7Chord.checked) {
+      availableChords.push({
+        semitone: formatSemitoneCount,
+        mode: "-Δ",
+        box: 1,
+        updateBox: false,
+        correctAnswer: false
+      });
+    }
+  }
+
+  return availableChords;
+}
+
+var leitnerSystem = new LeitnerSystem();
+getAvailableChords().forEach(element => leitnerSystem.addCard(element));
+leitnerSystem.closeDeck();
+
+let currentChordMethodologyValue = nextChordMethodology.value;
+nextChordMethodology.value = "random";
+for (let i = 0; i < 3; i++) {
+  chordStep();
+}
+nextChordMethodology.value = currentChordMethodologyValue;
+
 
 function chordStep() {
 
   lastChord.setChord(currentChord);
   currentChord.setChord(nextChord);
-  
-  if (fifthsProgression.checked) {
-    nextChord.setNextFifthChord();
-  }
-  else {
-    nextChord.setRandomChord();
-  }
 
+  switch (nextChordMethodology.value) {
+    case "spacedRepetition":
+      nextChord.setNextChordByInfo(leitnerSystem.nextCard());
+      break;
+    case "fifthProgression":
+      nextChord.setNextFifthChord();
+      break;
+    case "random":
+      nextChord.setRandomChord();
+      break;
+    default:
+      break;
+  }
+  
   if (loadedSounds) {
     currentChord.play();
   }
@@ -428,35 +510,3 @@ function highlightPermutationDiv(note) {
 
   highlightPermutationDiv.style.background = CORRECT_NOTES_COLOR;
 }
-
-function debugUpdate() {
-
-  document.body.onkeyup = function(e) {
-
-    if (e.key == " " ||
-        e.code == "Space" 
-    ) {
-
-      // Initialize variables
-      let q = 4; // User's grade
-      let n = 0; // Repetition number
-      let EF = 2.5; // Easiness factor
-      let I = 1; // Interval
-
-      // Use the sm2 function
-      let result = sm2(q, n, EF, I);
-
-      // Print the results
-      console.log("Updated repetition number (n): " + result.n);
-      console.log("Updated easiness factor (EF): " + result.EF);
-      console.log("Updated interval (I): " + result.I);
-
-    }
-
-  }
-
-
-  
-}
-
-debugUpdate();
