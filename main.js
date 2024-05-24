@@ -399,8 +399,6 @@ function enableHelp() {
   enablePermutationNotes(helpCheck.checked);
 }
 
-
-
 function resetPermutationDivs() {
   permDivsElt.forEach(
     (element) => element.style.background = NOTES_COLOR
@@ -430,3 +428,35 @@ function highlightPermutationDiv(note) {
 
   highlightPermutationDiv.style.background = CORRECT_NOTES_COLOR;
 }
+
+function debugUpdate() {
+
+  document.body.onkeyup = function(e) {
+
+    if (e.key == " " ||
+        e.code == "Space" 
+    ) {
+
+      // Initialize variables
+      let q = 4; // User's grade
+      let n = 0; // Repetition number
+      let EF = 2.5; // Easiness factor
+      let I = 1; // Interval
+
+      // Use the sm2 function
+      let result = sm2(q, n, EF, I);
+
+      // Print the results
+      console.log("Updated repetition number (n): " + result.n);
+      console.log("Updated easiness factor (EF): " + result.EF);
+      console.log("Updated interval (I): " + result.I);
+
+    }
+
+  }
+
+
+  
+}
+
+debugUpdate();
