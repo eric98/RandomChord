@@ -72,7 +72,6 @@ class LeitnerSystem {
     }
 
     currentCardStep() {
-        console.log(this.boxes[0]);
 
         if (getAnswer()) {
             this.currentCard.correctAnswer = true;

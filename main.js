@@ -194,21 +194,30 @@ function getAnswer() {
 
 function chordStep() {
 
-  leitnerSystem.nextCard();
-  lastChord.setChord(currentChord);
-  currentChord.setChord(nextChord);
-
-
   switch (nextChordMethodology.value) {
     case "spacedRepetition":
+      leitnerSystem.nextCard();
+    
+      lastChord.setChord(currentChord);
+      currentChord.setChord(nextChord);
+
       nextChord.setNextChordByInfo(leitnerSystem.seeNextCard());
       break;
+
     case "fifthProgression":
+      lastChord.setChord(currentChord);
+      currentChord.setChord(nextChord);
+
       nextChord.setNextFifthChord();
       break;
+
     case "random":
+      lastChord.setChord(currentChord);
+      currentChord.setChord(nextChord);
+
       nextChord.setRandomChord();
       break;
+      
     default:
       break;
   }
