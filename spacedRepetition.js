@@ -1,19 +1,3 @@
-class Flashcard {
-    constructor(question, answer) {
-        this.question = question;
-        this.answer = answer;
-
-        this.box = 1;
-        this.updateBox = false;
-    }
-
-    getAnswer() {
-        let userAnswer = prompt(this.question);
-
-        return userAnswer === this.answer;
-    }
-}
-
 class LeitnerSystem {
     init() {
         this.boxes = [[], [], [], [], []];
@@ -69,14 +53,14 @@ class LeitnerSystem {
 
     nextCard() {
 
+        this.currentCardStep();
+
         let nextCurrentCardIndex = this.currentCardIndex + 1;
 
         if (nextCurrentCardIndex < this.boxes[this.currentBoxIndex].length) {
-
+            
             this.currentCardIndex = nextCurrentCardIndex;
             this.currentCard = this.boxes[this.currentBoxIndex][this.currentCardIndex];
-    
-            this.currentCardStep();
         }
         else {
 
@@ -88,7 +72,10 @@ class LeitnerSystem {
     }
 
     currentCardStep() {
-        if (this.currentCard.correctAnswer) {
+        console.log(this.boxes[0]);
+
+        if (getAnswer()) {
+            this.currentCard.correctAnswer = true;
 
             if (this.currentCard.box < this.boxes.length - 1) {
                 this.currentCard.updateBox = true;

@@ -170,8 +170,11 @@ function getAvailableChords() {
     }
   }
 
-  return availableChords;
+  return shuffle(availableChords);
 }
+
+var correctNotes = 0;
+const MAX_CORRECT_NOTES = 4;
 
 var leitnerSystem = new LeitnerSystem();
 getAvailableChords().forEach(element => leitnerSystem.addCard(element));
@@ -185,14 +188,20 @@ for (let i = 0; i < 3; i++) {
 nextChordMethodology.value = currentChordMethodologyValue;
 
 
+function getAnswer() {
+  return correctNotes == MAX_CORRECT_NOTES;
+}
+
 function chordStep() {
 
+  leitnerSystem.nextCard();
   lastChord.setChord(currentChord);
   currentChord.setChord(nextChord);
 
+
   switch (nextChordMethodology.value) {
     case "spacedRepetition":
-      nextChord.setNextChordByInfo(leitnerSystem.nextCard());
+      nextChord.setNextChordByInfo(leitnerSystem.seeNextCard());
       break;
     case "fifthProgression":
       nextChord.setNextFifthChord();
@@ -213,6 +222,16 @@ function chordStep() {
 
   resetPermutationDivs();
 }
+
+document.body.onkeyup = function(e) {
+  if (e.key == " " ||
+      e.code == "Space" ||      
+      e.keyCode == 32      
+  ) {
+    correctNotes = 4;
+  }
+}
+
 
 function update() {
   lastChord.update();
@@ -482,6 +501,9 @@ function enableHelp() {
 }
 
 function resetPermutationDivs() {
+
+  correctNotes = 0;
+
   permDivsElt.forEach(
     (element) => element.style.background = NOTES_COLOR
     );
@@ -492,15 +514,19 @@ function highlightPermutationDiv(note) {
   let highlightPermutationDiv;
   switch (note) {
     case 1:
+      correctNotes++;
       highlightPermutationDiv = permDivsElt[0];
       break;
-    case 3:
+      case 3:
+      correctNotes++;
       highlightPermutationDiv = permDivsElt[1];
       break;
-    case 5:
+      case 5:
+      correctNotes++;
       highlightPermutationDiv = permDivsElt[2];
       break;
-    case 7:
+      case 7:
+      correctNotes++;
       highlightPermutationDiv = permDivsElt[3];
       break;
 
