@@ -108,6 +108,8 @@ var plingElt = document.getElementById("_pling");
 
 function getAvailableChords() {
 
+  console.log("reset chords")
+
   let availableChords = [];
 
   for (let index = 0; index < 12; index++) {
@@ -177,8 +179,7 @@ var correctNotes = 0;
 const MAX_CORRECT_NOTES = 4;
 
 var leitnerSystem = new LeitnerSystem();
-getAvailableChords().forEach(element => leitnerSystem.addCard(element));
-leitnerSystem.closeDeck();
+leitnerSystem.setArrayOfCards(getAvailableChords());
 
 let currentChordMethodologyValue = nextChordMethodology.value;
 nextChordMethodology.value = "random";
@@ -232,15 +233,22 @@ function chordStep() {
   resetPermutationDivs();
 }
 
-document.body.onkeyup = function(e) {
-  if (e.key == " " ||
-      e.code == "Space" ||      
-      e.keyCode == 32      
-  ) {
-    correctNotes = 4;
+function onChangeNextChordMethodology() {
+  switch (nextChordMethodology.value) {
+    case "spacedRepetition":
+      leitnerSystem.setArrayOfCards(getAvailableChords());
+      break;
+
+    case "fifthProgression":
+      break;
+
+    case "random":
+      break;
+      
+    default:
+      break;
   }
 }
-
 
 function update() {
   lastChord.update();
@@ -301,9 +309,18 @@ function tick() {
   }
 }
 
+function checkNewTypeChords() {
+  if (nextChordMethodology.value == "spacedRepetition") {
+    leitnerSystem.setArrayOfCards(getAvailableChords());
+  }
+}
+
 function checkMaj7() {
   if (!isThereAnyChordSelected()) {
     majChord.checked = true;
+  }
+  else {
+    checkNewTypeChords();
   }
 }
 
@@ -311,11 +328,17 @@ function check7() {
   if (!isThereAnyChordSelected()) {
     dominantChord.checked = true;
   }
+  else {
+    checkNewTypeChords();
+  }
 }
 
 function checkMin7() {
   if (!isThereAnyChordSelected()) {
     minorChord.checked = true;
+  }
+  else {
+    checkNewTypeChords();
   }
 }
 
@@ -323,17 +346,26 @@ function checkSemiDism() {
   if (!isThereAnyChordSelected()) {
     semiDismChord.checked = true;
   }
+  else {
+    checkNewTypeChords();
+  }
 }
 
 function checkAug7() {
   if (!isThereAnyChordSelected()) {
     augChord.checked = true;
   }
+  else {
+    checkNewTypeChords();
+  }
 }
 
 function checkMinorMaj7() {
   if (!isThereAnyChordSelected()) {
     minorMaj7Chord.checked = true;
+  }
+  else {
+    checkNewTypeChords();
   }
 }
 
@@ -363,6 +395,8 @@ function canSetMode(_mode) {
           return augChord.checked;
       case 5:
           return minorMaj7Chord.checked;
+      default:
+          break;
   }
 }
 

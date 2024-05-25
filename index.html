@@ -38,7 +38,7 @@
         </label> -->
 
         <label for="methodology-select">Methodology:</label>
-        <select title="nextChordMethodology" id="nextChordMethodology">
+        <select title="Chord Methodology" id="nextChordMethodology" onchange="onChangeNextChordMethodology()">
           <option value="spacedRepetition">Spaced Repetition</option>
           <option value="fifthProgression">5<sup>th</sup> progression</option>
           <option value="random">Random</option>
@@ -59,7 +59,6 @@
     <div class="flex-container">
 
       <div style="flex-grow: 1">
-        <!-- <div id="sketch-container"></div> -->
         <div id="imagesDiv" class="flex-container">
           <div class="chord" style="flex-grow: 4">
             <img id="lastImage" src="https://www.musiklehre.at/all_piano_chords/img/F/Fismaj7.gif">
@@ -176,27 +175,27 @@
     Chords: <br>
     <div class="flex-container">
       <div style="flex-grow: 1">
-        <label class="container" id="maj7" onclick="checkMaj7()">Δ (major 7)
+        <label class="container" onclick="checkMaj7()">Δ (major 7)
           <input id="_maj7" type="checkbox">
           <span class="checkmark"></span>
         </label>
-        <label class="container" id="dom" onclick="check7()">7 (dominant)
+        <label class="container" onclick="check7()">7 (dominant)
           <input id="_dom" type="checkbox">
           <span class="checkmark"></span>
         </label>
-        <label class="container" id="min7" onclick="checkMin7()">-7 (minor 7)
+        <label class="container" onclick="checkMin7()">-7 (minor 7)
           <input id="_min7" type="checkbox">  
           <span class="checkmark"></span>
         </label>
-        <label class="container" id="semiDism7" onclick="checkSemiDism()">ø (semidism)
+        <label class="container" onclick="checkSemiDism()">ø (semidism)
           <input id="_semiDism7" type="checkbox">
           <span class="checkmark"></span>
         </label>
-        <label class="container" id="aug7" onclick="checkAug7()">7♯5 (aug 7)
+        <label class="container" onclick="checkAug7()">7♯5 (aug 7)
           <input id="_aug7" type="checkbox">
           <span class="checkmark"></span>
         </label>
-        <label class="container" id="minMaj7" onclick="checkMinorMaj7()">-Δ (minor maj 7)
+        <label class="container" onclick="checkMinorMaj7()">-Δ (minor maj 7)
           <input id="_minMaj7" type="checkbox">
           <span class="checkmark"></span>
         </label>

@@ -19,6 +19,12 @@ class LeitnerSystem {
         this.boxes[0].push(card);
     }
 
+    setArrayOfCards(array) {
+        this.clearDeck();
+        array.forEach(element => this.addCard(element));
+        this.closeDeck();
+    }
+
     seeNextCard() {
 
         let nextCard = {};
