@@ -1,4 +1,5 @@
-const notes = "ABCDEFG"; 
+const NOTES = "ABCDEFG"; 
+const IMG_ROOT_URL = "resources/img/";
 
 class Chord {
     constructor(_elt, _imgElt, _permNumbersElt, _permNotesElt) {
@@ -285,7 +286,7 @@ class Chord {
 
     setRandomNote() {
         this.setNote(
-            notes.charAt(Math.floor(Math.random() * notes.length)),
+            NOTES.charAt(Math.floor(Math.random() * NOTES.length)),
             Math.floor(Math.random() * 3) - 1
         );
     }
@@ -499,7 +500,7 @@ class Chord {
             desiredAuxAlteration = "♭";
         }
         else if (desiredAlteration == 1) {
-            auxAlterationCodeImg = "is";
+            auxAlterationCodeImg = "s";
             desiredAuxAlteration = "♯";
         }
 
@@ -579,7 +580,7 @@ class Chord {
             auxChord = "m7b5";
         }
         else if (this.mode == "7♯5") {
-            auxChord = "7k5";
+            auxChord = "7aug5";
         }
         else if (this.mode == "-Δ") {
             auxChord = "mmaj7";
@@ -605,8 +606,8 @@ class Chord {
             nextName = this.note1.name;
         }
 
-        let imgChordName = prevName + "/" + nextName + this.note1.auxAlterationCode + auxChord + ".gif";
-        this.imgElt.src = "https://www.musiklehre.at/all_piano_chords/img/"+imgChordName;
+        let imgChordName = this.note1.name + this.note1.auxAlterationCode + auxChord + ".jpg";
+        this.imgElt.src = IMG_ROOT_URL + imgChordName;
     }
     
     drawPermutations() {

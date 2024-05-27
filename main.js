@@ -40,7 +40,7 @@ var backTrack = document.getElementById("_backTrack");
 backTrack.checked = true;
 
 var pitchTone = document.getElementById("pitchTone");
-pitchTone.value = "2";
+pitchTone.value = "0";
 
 var helpCheck = document.getElementById("_help");
 helpCheck.checked = true;
@@ -107,8 +107,6 @@ var metronomeElt = document.getElementById("_metronome");
 var plingElt = document.getElementById("_pling");
 
 function getAvailableChords() {
-
-  console.log("reset chords")
 
   let availableChords = [];
 
@@ -248,6 +246,11 @@ function onChangeNextChordMethodology() {
     default:
       break;
   }
+}
+
+function updatePitchTone() {
+  update();
+  draw();
 }
 
 function update() {
@@ -434,43 +437,41 @@ var klack;
 var pling;
 var loadedSounds = false;
 
-const ROOT_URL = "https://www.musiklehre.at/all_piano_chords/";
-const NOTES_SOUND = {
-  "1C": { url: "media/523-C.mp3", semitone: -9},
-  "1Cs": { url: "media/545-C-sharp.mp3", semitone: -8},
-  "1D": { url: "media/587-D.mp3", semitone: -7},
-  "1Ds": { url: "media/622-D-sharp.mp3", semitone: -6},
-  "1E": { url: "media/659-E.mp3", semitone: -5},
-  "1F": { url: "media/698-F.mp3", semitone: -4},
-  "1Fs": { url: "media/698-F-sharp.mp3", semitone: -3},
-  "1G": { url: "media/783-G.mp3", semitone: -2},
-  "1Gs": { url: "media/830-G-sharp.mp3", semitone: -1},
-  "2A": { url: "media/880-A.mp3", semitone: 0},
-  "2As": { url: "media/932-A-sharp.mp3", semitone: 1},
-  "2B": { url: "media/987-B.mp3", semitone: 2},
-  "2C": { url: "media/1046-C.mp3", semitone: 3},
-  "2Cs": { url: "media/1090-C-sharp.mp3", semitone: 4},
-  "2D": { url: "media/1174-D.mp3", semitone: 5},
-  "2Ds": { url: "media/1244-D-sharp.mp3", semitone: 6},
-  "2E": { url: "media/1318-E.mp3", semitone: 7},
-  "2F": { url: "media/1396-F.mp3", semitone: 8},
-  "2Fs": { url: "media/1396-F-sharp.mp3", semitone: 9},
-  "2G": { url: "media/1566-G.mp3", semitone: 10},
-  "2Gs": { url: "media/1660-G-sharp.mp3", semitone: 11},
-  "3A": { url: "media/1760-A.mp3", semitone: 12},
-  "3As": { url: "media/1864-A-sharp.mp3", semitone: 13},
-  "3B": { url: "media/1974-B.mp3", semitone: 14}
+const AUDIO_ROOT_URL = "resources/audio/";
+const NOTES_AUDIO = {
+  "C3": { url: "C3.mp3", semitone: -9},
+  "Cs3": { url: "Cs3.mp3", semitone: -8},
+  "D3": { url: "D3.mp3", semitone: -7},
+  "Ds3": { url: "Ds3.mp3", semitone: -6},
+  "E3": { url: "E3.mp3", semitone: -5},
+  "F3": { url: "F3.mp3", semitone: -4},
+  "Fs3": { url: "Fs3.mp3", semitone: -3},
+  "G3": { url: "G3.mp3", semitone: -2},
+  "Gs3": { url: "Gs3.mp3", semitone: -1},
+  "A4": { url: "A4.mp3", semitone: 0},
+  "As4": { url: "As4.mp3", semitone: 1},
+  "B4": { url: "B4.mp3", semitone: 2},
+  "C4": { url: "C4.mp3", semitone: 3},
+  "Cs4": { url: "Cs4.mp3", semitone: 4},
+  "D4": { url: "D4.mp3", semitone: 5},
+  "Ds4": { url: "Ds4.mp3", semitone: 6},
+  "E4": { url: "E4.mp3", semitone: 7},
+  "F4": { url: "F4.mp3", semitone: 8},
+  "Fs4": { url: "Fs4.mp3", semitone: 9},
+  "G4": { url: "G4.mp3", semitone: 10},
+  "Gs4": { url: "Gs4.mp3", semitone: 11},
+  "A5": { url: "A5.mp3", semitone: 12},
+  "As5": { url: "As5.mp3", semitone: 13},
+  "B5": { url: "B5.mp3", semitone: 14}
 }
 
 var audioNotes = {};
 
 function loadNoteAudios() {
 
-  Object.entries(NOTES_SOUND).forEach(([key, value]) => {
-    audioNotes[value.semitone] = {name: key, audio: new Audio(ROOT_URL+value.url)};
+  Object.entries(NOTES_AUDIO).forEach(([key, value]) => {
+    audioNotes[value.semitone] = {name: key, audio: new Audio(AUDIO_ROOT_URL + value.url)};
   });
-
-  // https://www.musiklehre.at/all_piano_chords/
 
 }
 

@@ -9,4 +9,4 @@ Web application for personal use of jazz music studies.
 
 Made with 🎺❤ by **Eric Garcia**
 
-Resources from [Musiklehre](https://www.musiklehre.at/all_piano_chords/) and [Freesound](https://freesound.org/)
+Resources from [Freesound](https://freesound.org/)
