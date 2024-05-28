@@ -90,7 +90,6 @@ div {text-align: center;}
   transition: opacity .2s;
 
   margin: 0 auto;
-
 }
 
 .slider:hover {
@@ -127,7 +126,6 @@ div {text-align: center;}
   transition: opacity .2s;
 
   margin: 0 auto;
-
 }
 
 .sliderVol:hover {
@@ -156,7 +154,6 @@ div {text-align: center;}
   font-size: 30px;
   height:100px;
   display: table;
-  background:#ccddcc;
 }
 
 #lastChord {
@@ -232,7 +229,18 @@ a:active {
   align-content: center;
 }
 
-#header-options div:nth-child(3) {
-  /* background-color: #86c8ff; */
-  align-content: center;
+#currentChordDiv {
+  background-color: rgb(51, 255, 68);
+}
+
+#chordsDiv {
+  background:#ccddcc;
+}
+
+#chordsDiv div {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-content: space-around;
 }

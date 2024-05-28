@@ -57,38 +57,42 @@
     </div>
     
     <div class="flex-container">
+      <div id="chordsDiv" class="flex-container" style="flex-grow: 1">
 
-      <div style="flex-grow: 1">
-        <div id="imagesDiv" class="flex-container">
-          <div class="chord" style="flex-grow: 4">
-            <img id="lastImage" src="https://www.musiklehre.at/all_piano_chords/img/F/Fismaj7.gif">
+        <div style="flex-grow: 1">
+          <div id="lastImageDiv" class="chord" style="flex-grow: 1">
+            <img title="Previous Chord" id="lastImage" src="https://www.musiklehre.at/all_piano_chords/img/F/Fismaj7.gif">
           </div>
-          <div class="chord" style="flex-grow: 4">
-            <img id="currentImage" src="https://www.musiklehre.at/all_piano_chords/img/F/Fismaj7.gif">
-          </div>
-          <div class="chord" style="flex-grow: 4">
-            <img id="nextImage" src="https://www.musiklehre.at/all_piano_chords/img/F/Fismaj7.gif">
+          <div id="lastChord" class="chord" style="flex-grow: 1">
+            <p id="_lastChord" class="chordName">A<sup>♭</sup><sub>7♯5</sub></p>
           </div>
         </div>
 
-        <div class="flex-container">
-          <div id="lastChord" class="chord" style="flex-grow: 4">
-            <p id="_lastChord" class="chordName">A<sup>♭</sup><sub>7♯5</sub></p>
+        <div id="currentChordDiv" style="flex-grow: 1">
+          <div id="currentImageDiv" class="chord" style="flex-grow: 1">
+            <img title="Current Chord" id="currentImage" src="https://www.musiklehre.at/all_piano_chords/img/F/Fismaj7.gif">
           </div>
-          <div id="currentChord" class="chord" style="flex-grow: 4">
+          <div id="currentChord" class="chord" style="flex-grow: 1">
             <p id="_currentChord" class="chordName">C<sup>♭</sup><sub>-Δ</sub></p>
           </div>
-          <div id="nextChord" class="chord" style="flex-grow: 4">
+        </div>
+
+        <div style="flex-grow: 1">
+          <div id="nextImageDiv" class="chord" style="flex-grow: 1">
+            <img title="Next Chord" id="nextImage" src="https://www.musiklehre.at/all_piano_chords/img/F/Fismaj7.gif">
+          </div>
+          <div id="nextChord" class="chord" style="flex-grow: 1">
             <p id="_nextChord" class="chordName">F<sup>♭</sup><sub>7♯5</sub></p>
           </div>
         </div>
+
       </div>
 
       <div id="myBeatsDiv" style="flex-grow: 1">
         <br>
         <div class="custom-select">
           Pitch Tone: &nbsp;
-          <select id="pitchTone" onchange="updatePitchTone()">
+          <select title="Pitch Tone" id="pitchTone" onchange="updatePitchTone()">
             <option value="0">C</option>
             <option value="1">B</option>
             <option value="2">B♭</option>

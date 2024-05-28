@@ -31,7 +31,12 @@ sliderBeats.oninput = function() {
   outputBeats.innerHTML = this.value;
 }
 
-var imagesDiv = document.getElementById("imagesDiv");
+var imagesDiv = [
+  document.getElementById("lastImageDiv"),
+  document.getElementById("currentImageDiv"),
+  document.getElementById("nextImageDiv")
+]
+
 var lastImage = document.getElementById("lastImage");
 var currentImage = document.getElementById("currentImage");
 var nextImage = document.getElementById("nextImage");
@@ -519,8 +524,8 @@ function enableImages(inputChecked) {
   lastImage.style.visibility = visibility;
   currentImage.style.visibility = visibility;
   nextImage.style.visibility = visibility;
-
-  imagesDiv.style.display = display;
+  
+  imagesDiv.forEach(element => element.style.display = display);
 }
 
 function enablePermutationNotes(inputChecked) {
