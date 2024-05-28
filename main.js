@@ -76,6 +76,8 @@ var permDivsElt = [
   document.getElementById("permutationDiv7")
 ]
 
+var correctNotes = [false, false, false, false];
+
 var permNumbersElt = [
   document.getElementById("permutation1"),
   document.getElementById("permutation3"),
@@ -202,8 +204,6 @@ function getAnswer() {
     mode: currentChord.mode,
     value: correctNotesCount
   }
-
-  return correctNotesCount == MAX_CORRECT_NOTES_COUNT;
 }
 
 function answersToStringFormat() {
@@ -622,7 +622,9 @@ function resetPermutationDivs() {
 
   permDivsElt.forEach(
     (element) => element.style.background = NOTES_COLOR
-    );
+  );
+
+  correctNotes = [false, false, false, false];
 }
 
 function highlightPermutationDiv(note) {
@@ -630,25 +632,47 @@ function highlightPermutationDiv(note) {
   let highlightPermutationDiv;
   switch (note) {
     case 1:
-      correctNotesCount++;
-      highlightPermutationDiv = permDivsElt[0];
+      
+      if (!correctNotes[0]) {
+        correctNotesCount++;
+        highlightPermutationDiv = permDivsElt[0];
+        correctNotes[0] = true;
+      }
+
       break;
-      case 3:
-      correctNotesCount++;
-      highlightPermutationDiv = permDivsElt[1];
+    case 3:
+
+      if (!correctNotes[1]) {
+        correctNotesCount++;
+        highlightPermutationDiv = permDivsElt[1];
+        correctNotes[1] = true;
+      }
+
       break;
-      case 5:
-      correctNotesCount++;
-      highlightPermutationDiv = permDivsElt[2];
+    case 5:
+
+      if (!correctNotes[2]) {
+        correctNotesCount++;
+        highlightPermutationDiv = permDivsElt[2];
+        correctNotes[2] = true;
+      }
+
       break;
-      case 7:
-      correctNotesCount++;
-      highlightPermutationDiv = permDivsElt[3];
+    case 7:
+
+      if (!correctNotes[3]) {
+        correctNotesCount++;
+        highlightPermutationDiv = permDivsElt[3];
+        correctNotes[3] = true;
+      }
+
       break;
 
     default:
       return;
   }
 
-  highlightPermutationDiv.style.background = CORRECT_NOTES_COLOR;
+  if (highlightPermutationDiv !== undefined) {
+    highlightPermutationDiv.style.background = CORRECT_NOTES_COLOR;
+  }
 }
