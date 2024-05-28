@@ -111,6 +111,12 @@ minorMaj7Chord.checked = false;
 var metronomeElt = document.getElementById("_metronome");
 var plingElt = document.getElementById("_pling");
 
+var correctNotesCount = 0;
+const MAX_CORRECT_NOTES_COUNT = 4;
+
+var answers = [];
+var resultsElt = document.getElementById("results");
+
 function getAvailableChords() {
 
   let availableChords = [];
@@ -178,9 +184,6 @@ function getAvailableChords() {
   return shuffle(availableChords);
 }
 
-var correctNotes = 0;
-const MAX_CORRECT_NOTES = 4;
-
 var leitnerSystem = new LeitnerSystem();
 leitnerSystem.setArrayOfCards(getAvailableChords());
 
@@ -190,13 +193,78 @@ for (let i = 0; i < 3; i++) {
   chordStep();
 }
 nextChordMethodology.value = currentChordMethodologyValue;
-
+answers = [];
 
 function getAnswer() {
-  return correctNotes == MAX_CORRECT_NOTES;
+
+  return {
+    semitone: currentChord.semitone,
+    mode: currentChord.mode,
+    value: correctNotesCount
+  }
+
+  return correctNotesCount == MAX_CORRECT_NOTES_COUNT;
+}
+
+function answersToStringFormat() {
+  
+  return answers.map((answer) => {
+
+    let key = Object.keys(answer)[0];
+    let chord = answer[key];
+
+    let desiredSemitone = Chord.formatSemitoneCount(chord.semitone + parseInt(pitchTone.value));
+    let note = Chord.semitoneIntToNote(desiredSemitone);
+
+    let name = note.name+"<sup>"+note.stringAlteration+"</sup><sub>"+chord.mode+"</sub>";
+    let currentValue = chord.value;
+    let maxValue = chord.maxValue;
+    let percentString = (chord.value / chord.maxValue)*100 + "%";
+
+    return name +": "+ percentString + " ("+currentValue+"/"+maxValue+")";
+  }).join("<br>");
 }
 
 function chordStep() {
+
+  // if app is playing
+  if (metronomeElt.checked) {
+    var currentAnswer = getAnswer();
+    var answerKey = currentAnswer.semitone + currentAnswer.mode;
+
+
+    let prevAnswer = answers.find(chordAnswer => chordAnswer.hasOwnProperty(answerKey))
+    if (prevAnswer !== undefined) {
+      prevAnswer[answerKey].maxValue += 4;
+      prevAnswer[answerKey].occurrence++;
+    }
+    else {
+
+      let answerToAdd = {
+        semitone: currentAnswer.semitone,
+        mode: currentAnswer.mode,
+        value: currentAnswer.value,
+        maxValue: 4,
+        occurrence: 1
+      }
+
+      answers.push({[answerKey]: answerToAdd});
+
+      answers.sort((a, b) => {
+
+        let keyA = Object.keys(a)[0];
+        let chordA = a[keyA];
+
+        let keyB = Object.keys(b)[0];
+        let chordB = b[keyB];
+
+        return chordA.semitone - chordB.semitone;
+      });
+
+    }
+
+    resultsElt.innerHTML = answersToStringFormat();
+  }
 
   switch (nextChordMethodology.value) {
     case "spacedRepetition":
@@ -550,7 +618,7 @@ function enableHelp() {
 
 function resetPermutationDivs() {
 
-  correctNotes = 0;
+  correctNotesCount = 0;
 
   permDivsElt.forEach(
     (element) => element.style.background = NOTES_COLOR
@@ -562,19 +630,19 @@ function highlightPermutationDiv(note) {
   let highlightPermutationDiv;
   switch (note) {
     case 1:
-      correctNotes++;
+      correctNotesCount++;
       highlightPermutationDiv = permDivsElt[0];
       break;
       case 3:
-      correctNotes++;
+      correctNotesCount++;
       highlightPermutationDiv = permDivsElt[1];
       break;
       case 5:
-      correctNotes++;
+      correctNotesCount++;
       highlightPermutationDiv = permDivsElt[2];
       break;
       case 7:
-      correctNotes++;
+      correctNotesCount++;
       highlightPermutationDiv = permDivsElt[3];
       break;
 

@@ -50,10 +50,6 @@ class Chord {
         this.maxPlayedNotesCount = 4; 
     }
 
-    getAnswer() {
-        return this.playedNotesCount === this.maxPlayedNotesCount;
-    }
-
     setMaj7() {
         this.mode = 'Δ';
 
@@ -331,7 +327,7 @@ class Chord {
             this.clearAudio();
         }
 
-        let note = this.semitoneIntToNote(_chordInfo.semitone);
+        let note = Chord.semitoneIntToNote(_chordInfo.semitone);
 
         this.name = note.name;
         this.alteration = note.intAlteration;
@@ -437,7 +433,7 @@ class Chord {
     // Gets int from -9 to 2
     // Returns the note object example {name: 'B', intAlteration: -1, stringAlteration: '♭', auxAlterationCode: 'b'}
     // values calculated like adding semitones to A note; from -9 [C] to 2 [B]
-    semitoneIntToNote(desiredSemitone) {
+    static semitoneIntToNote(desiredSemitone) {
 
         let desiredName;
         let desiredAlteration;
@@ -530,7 +526,7 @@ class Chord {
     }
 
     checkInputNoteExists(currentSemitoneCount) {
-        let inputNote = this.semitoneIntToNote(Chord.formatSemitoneCount(currentSemitoneCount));
+        let inputNote = Chord.semitoneIntToNote(Chord.formatSemitoneCount(currentSemitoneCount));
         
         if (inputNote.equals(this.note1)) {
             highlightPermutationDiv(1);
@@ -552,10 +548,10 @@ class Chord {
     update() {
         let desiredSemitone = Chord.formatSemitoneCount(this.semitone + parseInt(pitchTone.value));
 
-        this.note1 = this.semitoneIntToNote(Chord.formatSemitoneCount(desiredSemitone));
-        this.note3 = this.semitoneIntToNote(Chord.formatSemitoneCount(desiredSemitone + this.semitoneTo3));
-        this.note5 = this.semitoneIntToNote(Chord.formatSemitoneCount(desiredSemitone + this.semitoneTo5));
-        this.note7 = this.semitoneIntToNote(Chord.formatSemitoneCount(desiredSemitone + this.semitoneTo7));
+        this.note1 = Chord.semitoneIntToNote(desiredSemitone);
+        this.note3 = Chord.semitoneIntToNote(Chord.formatSemitoneCount(desiredSemitone + this.semitoneTo3));
+        this.note5 = Chord.semitoneIntToNote(Chord.formatSemitoneCount(desiredSemitone + this.semitoneTo5));
+        this.note7 = Chord.semitoneIntToNote(Chord.formatSemitoneCount(desiredSemitone + this.semitoneTo7));
     }
 
     draw() {

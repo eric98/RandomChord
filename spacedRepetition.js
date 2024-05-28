@@ -79,7 +79,9 @@ class LeitnerSystem {
 
     currentCardStep() {
 
-        if (getAnswer()) {
+        var currentAnswer = getAnswer();
+
+        if (currentAnswer.value == MAX_CORRECT_NOTES_COUNT) {
             this.currentCard.correctAnswer = true;
 
             if (this.currentCard.box < this.boxes.length - 1) {
