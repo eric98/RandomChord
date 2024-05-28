@@ -1,4 +1,5 @@
-// MICROPHONE
+const MILLISECONDS_PLAYING_NOTE_TO_CHECK_INPUT = 30;
+
 // based on code from https://raw.githubusercontent.com/cwilso/PitchDetect/main/js/pitchdetect.js
 function autoCorrelate( buf, sampleRate ) {
 	// Implements the ACF2+ algorithm
@@ -45,7 +46,7 @@ function autoCorrelate( buf, sampleRate ) {
 	return sampleRate/T0;
 }
 
-function noteFromPitch( frequency ) {
+function getNoteFromPitch( frequency ) {
   const A4_FREQUENCY = 440;
   const SEMITONES_COUNT = 12;
   const A4_MIDI_NUMBER = 69;
@@ -57,7 +58,6 @@ function noteFromPitch( frequency ) {
 var noteElement = document.getElementById("note");
 var noteFrequencyElement = document.getElementById("noteFrequency");
 
-const MILLISECONDS_PLAYING_NOTE_TO_CHECK_INPUT = 100;
 var lastNotePlayingInt = {
 	note: -1,
 	startedPlayingTime: -1
@@ -85,7 +85,7 @@ navigator.mediaDevices.getUserMedia({ audio: true, video: false })
     
 	  // 1. CHECK NOTE from microphone
       if (ac > -1) {
-        var note =  noteFromPitch( ac );
+        var note =  getNoteFromPitch( ac );
 		var transposedNote = note + parseInt(pitchTone.value);
 
         noteText = NOTE_STRINGS[transposedNote % 12];

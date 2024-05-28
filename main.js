@@ -481,9 +481,8 @@ function loadNoteAudios() {
 }
 
 function loadSounds() {
-  klack = new Audio('metronom-klack.mp3');
-  // pling = new Audio('metronom-pling.mp3');
-  pling = new Audio('metronom-pling.wav');
+  klack = new Audio(AUDIO_ROOT_URL+'metronom-klack.mp3');
+  pling = new Audio(AUDIO_ROOT_URL+'metronom-pling.wav');
 
   klack.volume = 0.3;
   pling.volume = 0.2;
