@@ -1,244 +1,250 @@
 <html>
-  <title>Random Chord - Eric Garcia</title>
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Random Chord - Eric Garcia</title>
 
-    <script src="https://kit.fontawesome.com/7022758a88.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="styles.css">
-  </head>
-  <style>
-  </style>
-  <body>
-    
-    <div id="header-options" class="flex-container">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <script src="https://kit.fontawesome.com/7022758a88.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <div id="header-options" class="flex-container">
+
+    <div style="flex-grow: 1">
+      <h1>Random Chord</h1>
+    </div>
+
+    <div style="flex-grow: 1">
+      <label>Backing track:</label>
+      <label class="container" id="backTrack">
+        <i class="fas fa-music"></i>
+        <i class="fas fa-guitar"></i>
+        <i class="fas fa-drum"></i>
+        <input id="_backTrack" type="checkbox">
+        <span class="checkmark"></span>
+      </label>
+
+    </div>
+
+    <div style="flex-grow: 1">
+
+      <label for="methodology-select">Methodology:</label>
+      <select title="Chord Methodology" id="nextChordMethodology" onchange="onChangeNextChordMethodology()">
+        <option value="spacedRepetition">Spaced Repetition</option>
+        <option value="fifthProgression">5<sup>th</sup> progression</option>
+        <option value="random">Random</option>
+      </select>
+
+    </div>
+
+    <div style="flex-grow: 1">
+      <label class="container" id="help" onclick="enableHelp()">Help
+        <input id="_help" type="checkbox">
+        <span class="checkmark"></span>
+      </label>
+
+    </div>
+
+  </div>
+
+  <div class="flex-container">
+    <div id="chordsDiv" class="flex-container" style="flex-grow: 1">
 
       <div style="flex-grow: 1">
-        <h1>Random Chord</h1>
+        <div id="lastImageDiv" class="chord" style="flex-grow: 1">
+          <img title="Previous Chord" id="lastImage" src="https://www.musiklehre.at/all_piano_chords/img/F/Fismaj7.gif">
+        </div>
+        <div id="lastChord" class="chord" style="flex-grow: 1">
+          <p id="_lastChord" class="chordName">A<sup>♭</sup><sub>7♯5</sub></p>
+        </div>
+      </div>
+
+      <div id="currentChordDiv" style="flex-grow: 1">
+        <div id="currentImageDiv" class="chord" style="flex-grow: 1">
+          <img title="Current Chord" id="currentImage"
+            src="https://www.musiklehre.at/all_piano_chords/img/F/Fismaj7.gif">
+        </div>
+        <div id="currentChord" class="chord" style="flex-grow: 1">
+          <p id="_currentChord" class="chordName">C<sup>♭</sup><sub>-Δ</sub></p>
+        </div>
       </div>
 
       <div style="flex-grow: 1">
-        <label>Backing track:</label>
-        <label class="container" id="backTrack">
-          <i class="fas fa-music"></i>
-          <i class="fas fa-guitar"></i>
-          <i class="fas fa-drum"></i>
-          <input id="_backTrack" type="checkbox">
-          <span class="checkmark"></span>
-        </label>
-        
+        <div id="nextImageDiv" class="chord" style="flex-grow: 1">
+          <img title="Next Chord" id="nextImage" src="https://www.musiklehre.at/all_piano_chords/img/F/Fismaj7.gif">
+        </div>
+        <div id="nextChord" class="chord" style="flex-grow: 1">
+          <p id="_nextChord" class="chordName">F<sup>♭</sup><sub>7♯5</sub></p>
+        </div>
       </div>
 
-      <div style="flex-grow: 1">
+    </div>
 
-        <label for="methodology-select">Methodology:</label>
-        <select title="Chord Methodology" id="nextChordMethodology" onchange="onChangeNextChordMethodology()">
-          <option value="spacedRepetition">Spaced Repetition</option>
-          <option value="fifthProgression">5<sup>th</sup> progression</option>
-          <option value="random">Random</option>
+    <div id="currentBeatDiv" style="flex-grow: 1">
+      <br>
+      <div class="custom-select">
+        Pitch Tone: &nbsp;
+        <select title="Pitch Tone" id="pitchTone" onchange="updatePitchTone()">
+          <option value="0">C</option>
+          <option value="1">B</option>
+          <option value="2">B♭</option>
+          <option value="3">A</option>
+          <option value="4">G♯</option>
+          <option value="5">G</option>
+          <option value="6">F♯</option>
+          <option value="7">F</option>
+          <option value="8">E</option>
+          <option value="9">E♭</option>
+          <option value="10">D</option>
+          <option value="11">C♯</option>
         </select>
-        
       </div>
-
-      <div style="flex-grow: 1">
-        <label class="container" id="help" onclick="enableHelp()">Help
-          <input id="_help" type="checkbox">
-          <span class="checkmark"></span>
-        </label>
-        
-      </div>
-      
-    </div>
-    
-    <div class="flex-container">
-      <div id="chordsDiv" class="flex-container" style="flex-grow: 1">
-
-        <div style="flex-grow: 1">
-          <div id="lastImageDiv" class="chord" style="flex-grow: 1">
-            <img title="Previous Chord" id="lastImage" src="https://www.musiklehre.at/all_piano_chords/img/F/Fismaj7.gif">
-          </div>
-          <div id="lastChord" class="chord" style="flex-grow: 1">
-            <p id="_lastChord" class="chordName">A<sup>♭</sup><sub>7♯5</sub></p>
-          </div>
-        </div>
-
-        <div id="currentChordDiv" style="flex-grow: 1">
-          <div id="currentImageDiv" class="chord" style="flex-grow: 1">
-            <img title="Current Chord" id="currentImage" src="https://www.musiklehre.at/all_piano_chords/img/F/Fismaj7.gif">
-          </div>
-          <div id="currentChord" class="chord" style="flex-grow: 1">
-            <p id="_currentChord" class="chordName">C<sup>♭</sup><sub>-Δ</sub></p>
-          </div>
-        </div>
-
-        <div style="flex-grow: 1">
-          <div id="nextImageDiv" class="chord" style="flex-grow: 1">
-            <img title="Next Chord" id="nextImage" src="https://www.musiklehre.at/all_piano_chords/img/F/Fismaj7.gif">
-          </div>
-          <div id="nextChord" class="chord" style="flex-grow: 1">
-            <p id="_nextChord" class="chordName">F<sup>♭</sup><sub>7♯5</sub></p>
-          </div>
-        </div>
-
-      </div>
-
-      <div id="myBeatsDiv" style="flex-grow: 1">
-        <br>
-        <div class="custom-select">
-          Pitch Tone: &nbsp;
-          <select title="Pitch Tone" id="pitchTone" onchange="updatePitchTone()">
-            <option value="0">C</option>
-            <option value="1">B</option>
-            <option value="2">B♭</option>
-            <option value="3">A</option>
-            <option value="4">G♯</option>
-            <option value="5">G</option>
-            <option value="6">F♯</option>
-            <option value="7">F</option>
-            <option value="8">E</option>
-            <option value="9">E♭</option>
-            <option value="10">D</option>
-            <option value="11">C♯</option>
-          </select>
-        </div>
-        <p id="myBeats">1</p>
-      </div>
-
+      <p id="currentBeatText">1</p>
     </div>
 
-    <div class="flex-container">
-      <div style="flex-grow: 1">
-        <p style="text-align: left; margin: auto;">Play: </p>
-        <div class="flex-container">
-          <div style="flex-grow: 1">
-            <label class="container" id="metronome" onclick="checkMetronome()">
+  </div>
+
+  <div class="flex-container">
+    <div style="flex-grow: 1">
+      <p style="text-align: left; margin: auto;">Play: </p>
+      <div class="flex-container">
+        <div style="flex-grow: 1">
+          <label class="container" id="metronome" onclick="enableMetronome()">
+            <i class="fas fa-play"></i>
+            <input id="_metronome" type="checkbox">
+            <span class="checkmark"></span>
+          </label>
+        </div>
+        <div style="flex-grow: 1">
+          <label class="container" id="pling" onclick="enableMetronome()">
+            <i class="fas fa-bell"></i>
+            1<sup>st</sup>
+            <input id="_pling" type="checkbox">
+            <span class="checkmark"></span>
+          </label>
+        </div>
+
+        <div style="flex-grow: 5">
+          <div class="slidecontainer">
+            <input type="range" min="40" max="208" value="80" class="slider" id="bpmRange">
+            <p style="font-size:18px; margin: auto;"><span id="bpmSpan"></span> bpm</p>
+          </div>
+        </div>
+        <div style="flex-grow: 5">
+          <div class="slidecontainer">
+            <input type="range" min="1" max="16" value="4" class="slider" id="beatsRange">
+            <p style="font-size:18px; margin: auto;"><span id="beatsSpan"></span> beats</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="flex-grow: 1">
+      <p style="text-align: left; margin: auto;">Volume: </p>
+      <div class="flex-container">
+        <div style="flex-grow: 1">
+          <div class="slidecontainer">
+            <input type="range" min="0" max="100" value="30" class="sliderVol" id="vol_metronome_range">
+            <p style="font-size:18px; margin: auto;">
               <i class="fas fa-play"></i>
-              <input id="_metronome" type="checkbox">
-              <span class="checkmark"></span>
-            </label>
+              &nbsp;
+              <span id="vol_metronome"></span> %
+            </p>
           </div>
-          <div style="flex-grow: 1">
-            <label class="container" id="pling" onclick="checkMetronome()">
-              <i class="fas fa-bell"></i>
-              1<sup>st</sup>
-              <input id="_pling" type="checkbox">
-              <span class="checkmark"></span>
-            </label>
-          </div>
-
-          <div style="flex-grow: 5">
-            <div class="slidecontainer">
-              <input type="range" min="40" max="208" value="80" class="slider" id="myRange">
-              <p style="font-size:18px; margin: auto;"><span id="demo"></span> bpm</p>
-            </div>
-          </div>
-          <div style="flex-grow: 5">
-            <div class="slidecontainer">
-              <input type="range" min="1" max="16" value="4" class="slider" id="beatsRange">
-              <p style="font-size:18px; margin: auto;"><span id="beatsSpan"></span> beats</p>
-            </div>
+        </div>
+        <div style="flex-grow: 1">
+          <div class="slidecontainer">
+            <input type="range" min="0" max="100" value="100" class="sliderVol" id="vol_backtrack_range">
+            <p style="font-size:18px; margin: auto;">
+              <i class="fas fa-music"></i>
+              <i class="fas fa-guitar"></i>
+              <i class="fas fa-drum"></i>
+              &nbsp;
+              <span id="vol_backtrack"></span> %
+            </p>
           </div>
         </div>
       </div>
-      <div style="flex-grow: 1">
-        <p style="text-align: left; margin: auto;">Volume: </p>
-        <div class="flex-container">
-          <div style="flex-grow: 1">
-            <div class="slidecontainer">
-              <input type="range" min="0" max="100" value="30" class="sliderVol" id="vol_metronome_range">
-              <p style="font-size:18px; margin: auto;">
-                <i class="fas fa-play"></i>
-                &nbsp;
-                <span id="vol_metronome"></span> % 
-              </p>
-            </div>
-          </div>
-          <div style="flex-grow: 1">
-            <div class="slidecontainer">
-              <input type="range" min="0" max="100" value="100" class="sliderVol" id="vol_backtrack_range">
-              <p style="font-size:18px; margin: auto;">
-                <i class="fas fa-music"></i>
-                <i class="fas fa-guitar"></i>
-                <i class="fas fa-drum"></i>
-                &nbsp;
-                <span id="vol_backtrack"></span> % 
-              </p>
-            </div>
-          </div>
-        </div>
 
-      </div>
     </div>
+  </div>
 
-    Chords: <br>
-    <div class="flex-container">
-      <div style="flex-grow: 1">
-        <label class="container" onclick="checkMaj7()">Δ (major 7)
-          <input id="_maj7" type="checkbox">
-          <span class="checkmark"></span>
-        </label>
-        <label class="container" onclick="check7()">7 (dominant)
-          <input id="_dom" type="checkbox">
-          <span class="checkmark"></span>
-        </label>
-        <label class="container" onclick="checkMin7()">-7 (minor 7)
-          <input id="_min7" type="checkbox">  
-          <span class="checkmark"></span>
-        </label>
-        <label class="container" onclick="checkSemiDism()">ø (semidism)
-          <input id="_semiDism7" type="checkbox">
-          <span class="checkmark"></span>
-        </label>
-        <label class="container" onclick="checkAug7()">7♯5 (aug 7)
-          <input id="_aug7" type="checkbox">
-          <span class="checkmark"></span>
-        </label>
-        <label class="container" onclick="checkMinorMaj7()">-Δ (minor maj 7)
-          <input id="_minMaj7" type="checkbox">
-          <span class="checkmark"></span>
-        </label>
+  Chords: <br>
+  <div class="flex-container">
+    <div style="flex-grow: 1">
+      <label class="container" onclick="onClickMaj7Chord()">Δ (major 7)
+        <input id="_maj7" type="checkbox">
+        <span class="checkmark"></span>
+      </label>
+      <label class="container" onclick="onClick7Chord()">7 (dominant)
+        <input id="_dom" type="checkbox">
+        <span class="checkmark"></span>
+      </label>
+      <label class="container" onclick="onClickMin7Chord()">-7 (minor 7)
+        <input id="_min7" type="checkbox">
+        <span class="checkmark"></span>
+      </label>
+      <label class="container" onclick="onClickSemiDismChord()">ø (semidism)
+        <input id="_semiDism7" type="checkbox">
+        <span class="checkmark"></span>
+      </label>
+      <label class="container" onclick="onClickAug7Chord()">7♯5 (aug 7)
+        <input id="_aug7" type="checkbox">
+        <span class="checkmark"></span>
+      </label>
+      <label class="container" onclick="onClickMinorMaj7Chord()">-Δ (minor maj 7)
+        <input id="_minMaj7" type="checkbox">
+        <span class="checkmark"></span>
+      </label>
+    </div>
+    <div style="flex-grow: 3">
+      <div>
+        <h1 id="note" style="height: 30px;">--</h1>
+        <p id="noteFrequency">-- Hz</p>
       </div>
-      <div style="flex-grow: 3">
-        <div>
-          <h1 id="note" style="height: 30px;">--</h1>
-          <p id="noteFrequency">-- Hz</p>
+      <div class="permutation">
+        <div id="permutationDiv1">
+          <p id="note1">C<sup>♭</sup></p>
+          <p id="permutation1">1<sup>♭</sup></p>
         </div>
-        <div class="permutation">
-          <div id="permutationDiv1">
-            <p id="note1">C<sup>♭</sup></p>
-            <p id="permutation1">1<sup>♭</sup></p>
-          </div>
-          <div id="permutationDiv3">
-            <p id="note3">E<sup>♭</sup></p>
-            <p id="permutation3">3<sup>♭</sup></p>
-          </div>
-          <div id="permutationDiv5">
-            <p id="note5">G<sup>♭</sup></p>
-            <p id="permutation5">5<sup>♭</sup></p>
-          </div>
-          <div id="permutationDiv7">
-            <p id="note7">B<sup>♭</sup></p>
-            <p id="permutation7">7<sup>♭</sup></p>
-          </div>
+        <div id="permutationDiv3">
+          <p id="note3">E<sup>♭</sup></p>
+          <p id="permutation3">3<sup>♭</sup></p>
+        </div>
+        <div id="permutationDiv5">
+          <p id="note5">G<sup>♭</sup></p>
+          <p id="permutation5">5<sup>♭</sup></p>
+        </div>
+        <div id="permutationDiv7">
+          <p id="note7">B<sup>♭</sup></p>
+          <p id="permutation7">7<sup>♭</sup></p>
         </div>
       </div>
     </div>
+  </div>
 
-    <div>
-      Results: [Chord: percent (correctNotes / askedNotes)]
-      <p id="results">
+  <div>
+    Results: [Chord: percent (correctNotes / askedNotes)]
+    <p id="results">
 
-      </p>
-    </div>
+    </p>
+  </div>
 
-    <footer>
-      <p style="font-size:20px;">Made with 🎺❤ by <a href="https://www.linkedin.com/in/ericgarciareverter/" target="_blank">Eric Garcia</a></p>
-      <p style="font-size:18px;">Resources from <a href="https://freesound.org/" target="_blank">Freesound</a></p>
-    </footer>
-    
-    <script src="./utils.js"></script>
-    <script src="./spacedRepetition.js"></script>
-    <script src="./model/Chord.js"></script>
-    <script src="./main.js"></script>
-    <script src="./tuner.js"></script>
-  </body>
+  <footer>
+    <p style="font-size:20px;">Made with 🎺❤ by <a href="https://www.linkedin.com/in/ericgarciareverter/"
+        target="_blank">Eric Garcia</a></p>
+    <p style="font-size:18px;">Resources from <a href="https://freesound.org/" target="_blank">Freesound</a></p>
+  </footer>
+
+  <script src="./scripts/utils.js"></script>
+  <script src="./scripts/tuner.js"></script>
+  <script src="./scripts/ui/chordTypes.js"></script>
+  <script src="./scripts/ui/sliders.js"></script>
+  <script src="./scripts/ui/permutations.js"></script>
+  <script src="./model/LeitnerSystem.js"></script>
+  <script src="./model/Chord.js"></script>
+  <script src="./main.js"></script>
+</body>
+
 </html>

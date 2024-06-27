@@ -178,12 +178,12 @@ div {text-align: center;}
   display: table-cell;
 }
 
-#myBeats {
+#currentBeatText {
   text-align: center;
   font-size: 45px;
 }
 
-#myBeatsDiv {
+#currentBeatDiv {
   background:#ddcccc;
 }
 

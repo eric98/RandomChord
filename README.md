@@ -1,12 +1,12 @@
 # Random Chord
 
-Web application for personal use of jazz music studies.
+Prototip desenvolupat com a part pràctica del TFG "Anàlisi d'aplicacions per a l'entrenament musical en la pràctica de conceptes específics de la improvisació de jazz i desenvolupament d'un prototip com a nova proposta innovadora en el mercat"
 
-#### Demo available at:
+#### Demostració disponible a:
 [Random chord](https://eric98.github.io/RandomChord/)
 
 <br/>
 
-Made with 🎺❤ by **Eric Garcia**
+Fet amb 🎺❤ per **Eric Garcia Reverter**, 2024
 
-Resources from [Freesound](https://freesound.org/)
+Recursos de [Freesound](https://freesound.org/)

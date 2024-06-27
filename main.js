@@ -1,36 +1,4 @@
-var slider = document.getElementById("myRange");
-var output = document.getElementById("demo");
-output.innerHTML = slider.value;
-
-const CORRECT_NOTES_COLOR = "#4CAF50";
-const NOTES_COLOR = "#86c8ff";
-
-slider.oninput = function() {
-  output.innerHTML = this.value;
-}
-
-var metronomeVolumenSlider = document.getElementById("vol_metronome_range");
-var metronomeVolumenText = document.getElementById("vol_metronome");
-metronomeVolumenText.innerHTML = metronomeVolumenSlider.value;
-metronomeVolumenSlider.oninput = function() {
-  metronomeVolumenText.innerHTML = this.value;
-}
-
-var backtrackVolumenSlider = document.getElementById("vol_backtrack_range");
-var backtrackVolumenText = document.getElementById("vol_backtrack");
-backtrackVolumenText.innerHTML = backtrackVolumenSlider.value;
-backtrackVolumenSlider.oninput = function() {
-  backtrackVolumenText.innerHTML = this.value;
-}
-
-var sliderBeats = document.getElementById("beatsRange");
-var outputBeats = document.getElementById("beatsSpan");
-outputBeats.innerHTML = sliderBeats.value;
-
-sliderBeats.oninput = function() {
-  outputBeats.innerHTML = this.value;
-}
-
+// IMAGES ELEMENTS
 var imagesDiv = [
   document.getElementById("lastImageDiv"),
   document.getElementById("currentImageDiv"),
@@ -41,6 +9,7 @@ var lastImage = document.getElementById("lastImage");
 var currentImage = document.getElementById("currentImage");
 var nextImage = document.getElementById("nextImage");
 
+// CONFIGURATION ELEMENTS
 var backTrack = document.getElementById("_backTrack");
 backTrack.checked = true;
 
@@ -50,179 +19,75 @@ pitchTone.value = "0";
 var helpCheck = document.getElementById("_help");
 helpCheck.checked = true;
 
-const DELTA_TIME = 16.67;
-const MILLISECONDS_PER_MINUTE = 60000;
+var nextChordMethodology = document.getElementById("nextChordMethodology");
+
+// LOOPS
 var lastUpdate = Date.now();
 var myInterval = setInterval(tick, DELTA_TIME);
 
 var timeNow = 0;
 var nextKlack = 0;
 
-var myBeats = document.getElementById("myBeats");
+var currentBeatText = document.getElementById("currentBeatText");
 var beatCount = -1;
-var firstChord = true;
-
-var nextChordMethodology = document.getElementById("nextChordMethodology");
-
 
 var lastElt = document.getElementById("_lastChord");
 var currentElt = document.getElementById("_currentChord");
 var nextElt = document.getElementById("_nextChord");
 
-var permDivsElt = [
-  document.getElementById("permutationDiv1"),
-  document.getElementById("permutationDiv3"),
-  document.getElementById("permutationDiv5"),
-  document.getElementById("permutationDiv7")
-]
-
-var correctNotes = [false, false, false, false];
-
-var permNumbersElt = [
-  document.getElementById("permutation1"),
-  document.getElementById("permutation3"),
-  document.getElementById("permutation5"),
-  document.getElementById("permutation7")
-];
-
-var permNotesElt = [
-  document.getElementById("note1"),
-  document.getElementById("note3"),
-  document.getElementById("note5"),
-  document.getElementById("note7")
-];
-
 var lastChord = new Chord(lastElt, lastImage, permNumbersElt, permNotesElt);
 var currentChord = new Chord(currentElt, currentImage, permNumbersElt, permNotesElt);
 var nextChord = new Chord(nextElt, nextImage, permNumbersElt, permNotesElt);
 
-var majChord = document.getElementById("_maj7");
-var dominantChord = document.getElementById("_dom");
-var minorChord = document.getElementById("_min7");
-var semiDismChord = document.getElementById("_semiDism7");
-var augChord = document.getElementById("_aug7");
-var minorMaj7Chord = document.getElementById("_minMaj7");
-
-majChord.checked = true;
-dominantChord.checked = false;
-minorChord.checked = false;
-semiDismChord.checked = false;
-augChord.checked = false;
-minorMaj7Chord.checked = false;
-
 var metronomeElt = document.getElementById("_metronome");
 var plingElt = document.getElementById("_pling");
 
-var correctNotesCount = 0;
-const MAX_CORRECT_NOTES_COUNT = 4;
+var firstChord = true;
 
-var answers = [];
-var resultsElt = document.getElementById("results");
+function tick() {
 
-function getAvailableChords() {
+  timeNow += DELTA_TIME;
 
-  let availableChords = [];
-
-  for (let index = 0; index < 12; index++) {
-
-    let formatSemitoneCount = Chord.formatSemitoneCount(index);
-
-    if (majChord.checked) {
-      availableChords.push({
-        semitone: formatSemitoneCount,
-        mode: "Δ",
-        box: 1,
-        updateBox: false,
-        correctAnswer: false
-      });
-    }
-    if (dominantChord.checked) {
-      availableChords.push({
-        semitone: formatSemitoneCount,
-        mode: "7",
-        box: 1,
-        updateBox: false,
-        correctAnswer: false
-      });
-    }
-    if (minorChord.checked) {
-      availableChords.push({
-        semitone: formatSemitoneCount,
-        mode: "-7",
-        box: 1,
-        updateBox: false,
-        correctAnswer: false
-      });
-    }
-    if (semiDismChord.checked) {
-      availableChords.push({
-        semitone: formatSemitoneCount,
-        mode: "ø",
-        box: 1,
-        updateBox: false,
-        correctAnswer: false
-      });
-    }
-    if (augChord.checked) {
-      availableChords.push({
-        semitone: formatSemitoneCount,
-        mode: "7♯5",
-        box: 1,
-        updateBox: false,
-        correctAnswer: false
-      });
-    }
-    if (minorMaj7Chord.checked) {
-      availableChords.push({
-        semitone: formatSemitoneCount,
-        mode: "-Δ",
-        box: 1,
-        updateBox: false,
-        correctAnswer: false
-      });
-    }
+  // VOLUME
+  if (loadedSounds) {
+    let metronomeVolume = metronomeVolumenSlider.value / 100;
+    pling.volume = metronomeVolume;
+    klack.volume = metronomeVolume * 0.67;
+    currentChord.updateVolume();
   }
 
-  return shuffle(availableChords);
-}
+  // METRONOME
+  if (metronomeElt.checked && timeNow > nextKlack) {
 
-var leitnerSystem = new LeitnerSystem();
-leitnerSystem.setArrayOfCards(getAvailableChords());
+    nextKlack = timeNow + MILLISECONDS_PER_MINUTE / slider.value;
 
-let currentChordMethodologyValue = nextChordMethodology.value;
-nextChordMethodology.value = "random";
-for (let i = 0; i < 3; i++) {
-  chordStep();
-}
-nextChordMethodology.value = currentChordMethodologyValue;
-answers = [];
+    beatCount++;
+    beatCount = beatCount % sliderBeats.value;
 
-function getAnswer() {
+    currentBeatText.textContent = beatCount + 1;
 
-  return {
-    semitone: currentChord.semitone,
-    mode: currentChord.mode,
-    value: correctNotesCount
+    if (beatCount == 0 && !firstChord) {
+      chordStep();
+
+      if (plingElt.checked) {
+
+        pling.pause();
+        pling.currentTime = 0;
+        pling.play();
+      }
+      else {
+        klack.play();
+      }
+    }
+    else {
+      klack.play();
+
+      if (firstChord) {
+        firstChord = false;
+      }
+    }
+
   }
-}
-
-function answersToStringFormat() {
-  
-  return answers.map((answer) => {
-
-    let key = Object.keys(answer)[0];
-    let chord = answer[key];
-
-    let desiredSemitone = Chord.formatSemitoneCount(chord.semitone + parseInt(pitchTone.value));
-    let note = Chord.semitoneIntToNote(desiredSemitone);
-
-    let name = note.name+"<sup>"+note.stringAlteration+"</sup><sub>"+chord.mode+"</sub>";
-    let currentValue = chord.value;
-    let maxValue = chord.maxValue;
-    let percentString = (chord.value / chord.maxValue)*100 + "%";
-
-    return name +": "+ percentString + " ("+currentValue+"/"+maxValue+")";
-  }).join("<br>");
 }
 
 function chordStep() {
@@ -248,7 +113,7 @@ function chordStep() {
         occurrence: 1
       }
 
-      answers.push({[answerKey]: answerToAdd});
+      answers.push({ [answerKey]: answerToAdd });
 
       answers.sort((a, b) => {
 
@@ -269,7 +134,7 @@ function chordStep() {
   switch (nextChordMethodology.value) {
     case "spacedRepetition":
       leitnerSystem.nextCard();
-    
+
       lastChord.setChord(currentChord);
       currentChord.setChord(nextChord);
 
@@ -289,11 +154,11 @@ function chordStep() {
 
       nextChord.setRandomChord();
       break;
-      
+
     default:
       break;
   }
-  
+
   if (loadedSounds) {
     currentChord.play();
   }
@@ -302,28 +167,6 @@ function chordStep() {
   draw();
 
   resetPermutationDivs();
-}
-
-function onChangeNextChordMethodology() {
-  switch (nextChordMethodology.value) {
-    case "spacedRepetition":
-      leitnerSystem.setArrayOfCards(getAvailableChords());
-      break;
-
-    case "fifthProgression":
-      break;
-
-    case "random":
-      break;
-      
-    default:
-      break;
-  }
-}
-
-function updatePitchTone() {
-  update();
-  draw();
 }
 
 function update() {
@@ -339,218 +182,71 @@ function draw() {
   nextChord.draw();
 }
 
-function tick() {
+// LEITNER_SYSTEM
+var leitnerSystem = new LeitnerSystem();
+setInitialChords();
 
-    timeNow += DELTA_TIME;
+var answers = [];
+var resultsElt = document.getElementById("results");
 
-    // VOLUME
-    if (loadedSounds) {
-      let metronomeVolume = metronomeVolumenSlider.value / 100;
-      pling.volume = metronomeVolume;
-      klack.volume = metronomeVolume * 0.67;
-      currentChord.updateVolume();
-    }
+function setInitialChords() {
+  leitnerSystem.setArrayOfCards(getAvailableChords());
 
-    // METRONOME
-    if (metronomeElt.checked && timeNow > nextKlack) {
+  let currentChordMethodologyValue = nextChordMethodology.value;
+  nextChordMethodology.value = INITIAL_NEXT_CHORD_METHODOLOGY;
+  for (let i = 0; i < INITIAL_CHORDS_COUNT; i++) {
+    chordStep();
+  }
+  nextChordMethodology.value = currentChordMethodologyValue;
+  answers = [];
+}
 
-      nextKlack = timeNow + MILLISECONDS_PER_MINUTE/slider.value;
+function getAnswer() {
 
-      beatCount++;
-      beatCount = beatCount % sliderBeats.value;
-
-      myBeats.textContent = beatCount + 1;
-
-      if (beatCount == 0 && !firstChord) {
-        chordStep();
-
-        if (plingElt.checked) {
-          
-          pling.pause();
-          pling.currentTime = 0;
-          pling.play();
-        }
-        else  {
-          klack.play();
-        }
-      }
-      else {
-        klack.play();
-
-        if (firstChord) {
-          firstChord = false;
-        }
-      }
-
+  return {
+    semitone: currentChord.semitone,
+    mode: currentChord.mode,
+    value: correctNotesCount
   }
 }
 
-function checkNewTypeChords() {
-  if (nextChordMethodology.value == "spacedRepetition") {
-    leitnerSystem.setArrayOfCards(getAvailableChords());
-  }
+function answersToStringFormat() {
+
+  return answers.map((answer) => {
+
+    let key = Object.keys(answer)[0];
+    let chord = answer[key];
+
+    let desiredSemitone = Chord.formatSemitoneCount(chord.semitone + parseInt(pitchTone.value));
+    let note = Chord.semitoneIntToNote(desiredSemitone);
+
+    let name = note.name + "<sup>" + note.stringAlteration + "</sup><sub>" + chord.mode + "</sub>";
+    let currentValue = chord.value;
+    let maxValue = chord.maxValue;
+    let percentString = (chord.value / chord.maxValue) * 100 + "%";
+
+    return name + ": " + percentString + " (" + currentValue + "/" + maxValue + ")";
+  }).join("<br>");
 }
 
-function checkMaj7() {
-  if (!isThereAnyChordSelected()) {
-    majChord.checked = true;
-  }
-  else {
-    checkNewTypeChords();
-  }
-}
-
-function check7() {
-  if (!isThereAnyChordSelected()) {
-    dominantChord.checked = true;
-  }
-  else {
-    checkNewTypeChords();
-  }
-}
-
-function checkMin7() {
-  if (!isThereAnyChordSelected()) {
-    minorChord.checked = true;
-  }
-  else {
-    checkNewTypeChords();
-  }
-}
-
-function checkSemiDism() {
-  if (!isThereAnyChordSelected()) {
-    semiDismChord.checked = true;
-  }
-  else {
-    checkNewTypeChords();
-  }
-}
-
-function checkAug7() {
-  if (!isThereAnyChordSelected()) {
-    augChord.checked = true;
-  }
-  else {
-    checkNewTypeChords();
-  }
-}
-
-function checkMinorMaj7() {
-  if (!isThereAnyChordSelected()) {
-    minorMaj7Chord.checked = true;
-  }
-  else {
-    checkNewTypeChords();
-  }
-}
-
-function isThereAnyChordSelected() {
-  return (
-      majChord.checked ||
-      dominantChord.checked ||
-      minorChord.checked ||
-      semiDismChord.checked ||
-      augChord.checked ||
-      minorMaj7Chord.checked
-    );
-}
-
-function canSetMode(_mode) {
-
-  switch(_mode) {
-      case 0:
-          return majChord.checked;
-      case 1:
-          return dominantChord.checked;
-      case 2:
-          return minorChord.checked;
-      case 3:
-          return semiDismChord.checked;
-      case 4:
-          return augChord.checked;
-      case 5:
-          return minorMaj7Chord.checked;
-      default:
-          break;
-  }
-}
-
-function getSemitone(tone, alter) {
-
-  let result = 0;
-  switch (tone) {
-      case 'A':
-          result = 0;
-          break;
-      case 'B':
-          result = 2;
-          break;
-      case 'C':
-          result = 3;
-          break;
-      case 'D':
-          result = 5;
-          break;
-      case 'E':
-          result = 7;
-          break;
-      case 'F':
-          result = 8;
-          break;
-      case 'G':
-          result = 10;
-          break;
-  }
-
-  return result + alter;
-}
-
+// LOAD RESOURCES
 var klack;
 var pling;
 var loadedSounds = false;
-
-const AUDIO_ROOT_URL = "resources/audio/";
-const NOTES_AUDIO = {
-  "C3": { url: "C3.mp3", semitone: -9},
-  "Cs3": { url: "Cs3.mp3", semitone: -8},
-  "D3": { url: "D3.mp3", semitone: -7},
-  "Ds3": { url: "Ds3.mp3", semitone: -6},
-  "E3": { url: "E3.mp3", semitone: -5},
-  "F3": { url: "F3.mp3", semitone: -4},
-  "Fs3": { url: "Fs3.mp3", semitone: -3},
-  "G3": { url: "G3.mp3", semitone: -2},
-  "Gs3": { url: "Gs3.mp3", semitone: -1},
-  "A4": { url: "A4.mp3", semitone: 0},
-  "As4": { url: "As4.mp3", semitone: 1},
-  "B4": { url: "B4.mp3", semitone: 2},
-  "C4": { url: "C4.mp3", semitone: 3},
-  "Cs4": { url: "Cs4.mp3", semitone: 4},
-  "D4": { url: "D4.mp3", semitone: 5},
-  "Ds4": { url: "Ds4.mp3", semitone: 6},
-  "E4": { url: "E4.mp3", semitone: 7},
-  "F4": { url: "F4.mp3", semitone: 8},
-  "Fs4": { url: "Fs4.mp3", semitone: 9},
-  "G4": { url: "G4.mp3", semitone: 10},
-  "Gs4": { url: "Gs4.mp3", semitone: 11},
-  "A5": { url: "A5.mp3", semitone: 12},
-  "As5": { url: "As5.mp3", semitone: 13},
-  "B5": { url: "B5.mp3", semitone: 14}
-}
 
 var audioNotes = {};
 
 function loadNoteAudios() {
 
   Object.entries(NOTES_AUDIO).forEach(([key, value]) => {
-    audioNotes[value.semitone] = {name: key, audio: new Audio(AUDIO_ROOT_URL + value.url)};
+    audioNotes[value.semitone] = { name: key, audio: new Audio(value.url) };
   });
 
 }
 
 function loadSounds() {
-  klack = new Audio(AUDIO_ROOT_URL+'metronom-klack.mp3');
-  pling = new Audio(AUDIO_ROOT_URL+'metronom-pling.wav');
+  klack = new Audio(KLACK_AUDIO);
+  pling = new Audio(PLING_AUDIO);
 
   klack.volume = 0.3;
   pling.volume = 0.2;
@@ -565,7 +261,13 @@ function loadSounds() {
 
 }
 
-function checkMetronome() {
+// UPDATE UI
+function updatePitchTone() {
+  update();
+  draw();
+}
+
+function enableMetronome() {
 
   if (!loadedSounds) {
     loadSounds();
@@ -591,7 +293,7 @@ function enableImages(inputChecked) {
   lastImage.style.visibility = visibility;
   currentImage.style.visibility = visibility;
   nextImage.style.visibility = visibility;
-  
+
   imagesDiv.forEach(element => element.style.display = display);
 }
 
@@ -614,65 +316,4 @@ function enablePermutationNotes(inputChecked) {
 function enableHelp() {
   enableImages(helpCheck.checked);
   enablePermutationNotes(helpCheck.checked);
-}
-
-function resetPermutationDivs() {
-
-  correctNotesCount = 0;
-
-  permDivsElt.forEach(
-    (element) => element.style.background = NOTES_COLOR
-  );
-
-  correctNotes = [false, false, false, false];
-}
-
-function highlightPermutationDiv(note) {
-  
-  let highlightPermutationDiv;
-  switch (note) {
-    case 1:
-      
-      if (!correctNotes[0]) {
-        correctNotesCount++;
-        highlightPermutationDiv = permDivsElt[0];
-        correctNotes[0] = true;
-      }
-
-      break;
-    case 3:
-
-      if (!correctNotes[1]) {
-        correctNotesCount++;
-        highlightPermutationDiv = permDivsElt[1];
-        correctNotes[1] = true;
-      }
-
-      break;
-    case 5:
-
-      if (!correctNotes[2]) {
-        correctNotesCount++;
-        highlightPermutationDiv = permDivsElt[2];
-        correctNotes[2] = true;
-      }
-
-      break;
-    case 7:
-
-      if (!correctNotes[3]) {
-        correctNotesCount++;
-        highlightPermutationDiv = permDivsElt[3];
-        correctNotes[3] = true;
-      }
-
-      break;
-
-    default:
-      return;
-  }
-
-  if (highlightPermutationDiv !== undefined) {
-    highlightPermutationDiv.style.background = CORRECT_NOTES_COLOR;
-  }
 }
